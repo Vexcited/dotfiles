@@ -1,0 +1,187 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "right",
+      "segments": [
+        {
+          "background": "#2f2f2f",
+          "foreground": "#fafafa",
+          "leading_diamond": "\ue0ba",
+          "style": "diamond",
+          "template": "\u200b",
+          "type": "text"
+        },
+        {
+          "background": "#2f2f2f",
+          "foreground": "#008000",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}#e91e63{{ end }}"
+          ],
+          "properties": {
+            "always_enabled": true
+          },
+          "style": "diamond",
+          "template": " {{ if gt .Code 0 }}\u2718 {{ else }}\u2713 {{ end }}<#ffffff>\u2571</>",
+          "type": "exit"
+        },
+        {
+          "background": "#2f2f2f",
+          "foreground": "#6CA35E",
+          "properties": {
+            "fetch_version": false
+          },
+          "style": "diamond",
+          "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }}<#ffffff>\u2571</>",
+          "type": "node"
+        },
+        {
+          "background": "#2f2f2f",
+          "foreground": "#e3d236",
+          "properties": {
+            "fetch_version": false
+          },
+          "style": "diamond",
+          "template": " \ue235 {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }}<#ffffff>\u2571</>",
+          "type": "python"
+        },
+        {
+          "background": "#2f2f2f",
+          "foreground": "#7FD5EA",
+          "properties": {
+            "fetch_version": false
+          },
+          "style": "powerline",
+          "template": " \ufcd1{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}<#ffffff> \u2571</>",
+          "type": "go"
+        },
+        {
+          "background": "#2f2f2f",
+          "foreground": "#3891A6",
+          "properties": {
+            "fetch_version": false
+          },
+          "style": "diamond",
+          "template": " \ue77f {{ if .Unsupported }}\uf071{{ else }}{{ .Full }}{{ end }}<#ffffff>\u2571</>",
+          "type": "dotnet"
+        },
+        {
+          "background": "#2f2f2f",
+          "foreground": "#FFCE5C",
+          "properties": {
+            "style": "roundrock",
+            "threshold": 500
+          },
+          "style": "plain",
+          "template": " {{ .FormattedMs }}<#fafafa> \uf252 \u2571</>",
+          "type": "executiontime"
+        },
+        {
+          "background": "#2f2f2f",
+          "foreground": "#CCCC00",
+          "foreground_templates": [
+            "{{ if eq \"Full\" .State.String }}#006400{{ end }}",
+            "{{ if eq \"Charging\" .State.String }}#00FF00{{ end }}",
+            "{{ if eq \"Discharging\" .State.String }}#999900{{ end }}"
+          ],
+          "properties": {
+            "charged_icon": "\uf0e7 ",
+            "charging_icon": "\uf0e7 ",
+            "discharging_icon": "\uf578 "
+          },
+          "style": "powerline",
+          "template": " {{ if not .Error }}{{ .Icon }}{{ .Percentage }}{{ end }}{{ .Error }}<#999900></><#FFFFFF> \u2571</>",
+          "type": "battery"
+        },
+        {
+          "background": "#2f2f2f",
+          "foreground": "#fafafa",
+          "properties": {
+            "time_format": "15:04:05"
+          },
+          "style": "diamond",
+          "template": " {{ .CurrentDate | date .Format }}<#007ACC> \uf64f </>",
+          "trailing_diamond": "\ue0bc",
+          "type": "time"
+        }
+      ],
+      "type": "rprompt"
+    },
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "background": "#2f2f2f",
+          "foreground": "#ffffff",
+          "leading_diamond": "\ue0ba",
+          "properties": {
+            "alpine": "\uf300",
+            "arch": "\uf303",
+            "centos": "\uf304",
+            "debian": "\uf306",
+            "elementary": "\uf309",
+            "fedora": "\uf30a",
+            "gentoo": "\uf30d",
+            "linux": "\ue712",
+            "macos": "\ue711",
+            "manjaro": "\uf312",
+            "mint": "\uf30f",
+            "opensuse": "\uf314",
+            "raspbian": "\uf315",
+            "ubuntu": "\uf31c",
+            "windows": "\ue70f",
+            "wsl": "\ue712",
+            "wsl_separator": " on "
+          },
+          "style": "diamond",
+          "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}}<#ffffff> \u2571</>",
+          "type": "os"
+        },
+        {
+          "background": "#2f2f2f",
+          "foreground": "#ffff66",
+          "properties": {
+            "root_icon": "\uf0e7"
+          },
+          "style": "diamond",
+          "template": " \uf0e7<#7a7a7a> \u2571</>",
+          "type": "root"
+        },
+        {
+          "background": "#2f2f2f",
+          "foreground": "#3FA5A6",
+          "properties": {
+            "home_icon": "\uf015 ~",
+            "style": "folder"
+          },
+          "style": "diamond",
+          "template": "<#f2f200> </>{{ .Path }} ",
+          "type": "path"
+        },
+        {
+          "background": "#2f2f2f",
+          "foreground": "#a3a310",
+          "properties": {
+            "fetch_stash_count": true,
+            "fetch_upstream_icon": true
+          },
+          "style": "powerline",
+          "template": "<#ffffff>\u2571 </>{{ .HEAD }} {{ .BranchStatus }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Staging.Changed) (.Working.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0}} \uf692 {{ .StashCount }}{{ end }}{{ if gt .WorktreeCount 0}} \uf1bb {{ .WorktreeCount }}{{ end }} ",
+          "type": "git"
+        },
+        {
+          "background": "#2f2f2f",
+          "foreground": "#fafafa",
+          "style": "diamond",
+          "template": "\u200b",
+          "trailing_diamond": "\ue0bc",
+          "type": "text"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "console_title_template": "{{if .Root}}root :: {{end}}{{.Shell}} :: {{.Folder}}",
+  "final_space": true,
+  "version": 2
+}
