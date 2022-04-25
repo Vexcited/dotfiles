@@ -7,7 +7,7 @@ My dotfiles for Windows, Debian, Termux and so on.
 pkg upgrade -y && \
 pkg install git -y && \
 cd ~/ && \
-git clone https://github.com/Vexcited/dotfiles && \
+git clone https://github.com/vexcited/dotfiles && \
 cd dotfiles && \
 chmod -x ./setup-termux.sh && \
 ./setup-termux.sh
