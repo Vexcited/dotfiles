@@ -1,5 +1,5 @@
 # dotfiles
-My dotfiles for Windows, Debian, Termux and so on.
+My dotfiles for Windows, Arch-Linux, Termux and so on.
 
 ## Termux
 
@@ -17,6 +17,11 @@ cd dotfiles && \
 chmod -x ./setup-termux.sh && \
 ./setup-termux.sh
 ```
+
+## Arch-Linux
+
+My whole Arch-Linux setup and configuration is detailled
+in [its wiki](https://github.com/Vexcited/dotfiles/wiki/Arch-Linux).
 
 ## Windows (Home: 21H2)
 
