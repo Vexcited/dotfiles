@@ -1,0 +1,10 @@
+# Located at "~/.bash_profile".
+
+# Load configuration.
+[[ -f ~/.bashrc ]] && . ~/.bashrc
+
+# Start xorg.
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ] && [[ "$(tty)" = "/dev/tty1" ]]; then
+  exec startx
+fi
+
