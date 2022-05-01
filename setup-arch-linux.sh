@@ -11,25 +11,37 @@ then
   exit 1
 fi
 
-echo "Installing cool packages..."
+echo "Installing cool packages... (it will maybe ask you a password)"
 sudo pacman -Syu
 sudo pacman -S \
   github-cli \
   xdg-utils \
   neovim \
   discord \
-  alacritty
+  alacritty \
+  zsh \
+  curl \
+  wget
 
 echo "Installing yay..."
 sudo pacman -S --needed base-devel git
 git clone https://aur.archlinux.org/yay-git.git && cd yay-git
 makepkg -si && cd .. && rm -rf yay-git
 
-echo "Installing Hack nerd font..."
+echo "Installing Hack Nerd Font..."
 yay -S nerd-fonts-hack
 
 echo "Login to GitHub... Follow the instructions given by the GitHub CLI."
 gh auth login
+
+echo "Setting ZSH as default shell... (it will maybe ask you a password)"
+chsh -s $(which zsh)
+
+echo "Installing oh-my-zsh..."
+sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+
+echo "Installing NVM..."
+yay -S nvm
 
 echo "Symlinking dotfiles..."
 
