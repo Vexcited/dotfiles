@@ -21,7 +21,10 @@ sudo pacman -S \
   alacritty \
   zsh \
   curl \
-  wget
+  wget \
+  pkgconf \
+  xmonad \
+  xmonad-contrib
 
 echo "Installing yay..."
 sudo pacman -S --needed base-devel git
