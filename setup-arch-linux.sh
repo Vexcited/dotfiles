@@ -41,7 +41,7 @@ echo "Setting ZSH as default shell... (it will maybe ask you a password)"
 chsh -s $(which zsh)
 
 echo "Installing oh-my-zsh..."
-sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 echo "Installing NVM..."
 yay -S nvm
@@ -49,7 +49,7 @@ yay -S nvm
 echo "Symlinking dotfiles..."
 
 # Xorg
-echoe -e "\tSyncing xorg..."
+echo -e "\tSyncing xorg..."
 ln -s $DOTFILES/xorg/Xresources $HOME/.Xresources
 ln -s $DOTFILES/xorg/xinitrc $HOME/.xinitrc
 
@@ -59,7 +59,8 @@ mkdir -p $HOME/.config/alacritty
 ln -s $DOTFILES/alacritty/alacritty.yml $HOME/.config/alacritty/.alacritty.yml
 
 # Bash
-echo -e "\tSyncing bash..."
+echo -e "\tSyncing bash... (default configurations are removed)"
+rm -rf $HOME/.bashrc $HOME/.bash_profile
 ln -s $DOTFILES/bash/bashrc $HOME/.bashrc
 ln -s $DOTFILES/bash/bash_profile $HOME/.bash_profile
 
