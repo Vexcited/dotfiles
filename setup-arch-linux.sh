@@ -26,7 +26,8 @@ sudo pacman -S \
   xmonad \
   xmonad-contrib \
   picom \
-  nitrogen
+  feh \
+  rofi
 
 echo "Installing yay..."
 sudo pacman -S --needed base-devel git

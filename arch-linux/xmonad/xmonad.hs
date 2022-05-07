@@ -215,10 +215,12 @@ myLogHook = return ()
 -- Perform an arbitrary action each time xmonad starts or is restarted
 -- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
 -- per-workspace layout choices.
---
--- By default, do nothing.
+
+myWallpaperPath :: String
+myWallpaperPath = "~/.vexcited-dotfiles/wallpapers/wallpaper-fullscreen.png"
+
 myStartupHook = do
-  spawnOnce "nitrogen --restore &"
+  spawnOnce $ "feh --bg-fill --bg-center " ++ myWallpaperPath ++ " &"
   spawnOnce "picom &"
 
 ------------------------------------------------------------------------
@@ -259,10 +261,10 @@ defaults = def {
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
 help :: String
-help = unlines ["The default modifier key is 'alt'. Default keybindings:",
+help = unlines ["Modifier key: 'super'.",
     "",
     "-- launching and killing programs",
-    "mod-Shift-Enter  Launch xterminal",
+    "mod-Shift-Enter  Launch alacritty",
     "mod-p            Launch dmenu",
     "mod-Shift-p      Launch gmrun",
     "mod-Shift-c      Close/kill the focused window",
