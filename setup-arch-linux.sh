@@ -61,10 +61,15 @@ mkdir -p $HOME/.config/alacritty
 ln -s $DOTFILES/alacritty/alacritty.yml $HOME/.config/alacritty/.alacritty.yml
 
 # Bash
-echo -e "\tSyncing bash... (default configurations are removed)"
+echo -e "\tSyncing bash... (default configurations - in ~/.bashrc and ~/.bash_profile - are removed)"
 rm -rf $HOME/.bashrc $HOME/.bash_profile
 ln -s $DOTFILES/bash/bashrc $HOME/.bashrc
 ln -s $DOTFILES/bash/bash_profile $HOME/.bash_profile
+
+# Xmonad
+echo -e "\tSyncing xmonad... (default configuration - in ~/.xmonad - is removed)"
+rm -rf $HOME/.xmonad
+ln -s $DOTFILES/xmonad $HOME/.xmonad
 
 echo "Done !"
 exit 0
