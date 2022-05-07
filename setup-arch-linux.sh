@@ -73,5 +73,15 @@ echo -e "\tSyncing xmonad... (default configuration - in ~/.xmonad - is removed)
 rm -rf $HOME/.xmonad
 ln -s $DOTFILES/xmonad $HOME/.xmonad
 
+# Rofi
+echo -e "\tSyncing rofi..."
+rm -rf $HOME/.config/rofi
+ln -s $DOTFILES/rofi $HOME/.config/rofi
+
+# Picom
+echo -e "\tSyncing picom..."
+rm -rf $HOME/.config/picom
+ln -s $DOTFILES/picom $HOME/.config/picom
+
 echo "Done !"
 exit 0

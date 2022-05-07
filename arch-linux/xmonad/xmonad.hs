@@ -35,22 +35,19 @@ myFocusedBorderColor = "#5E81AC"
 --
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
-    -- launch a terminal
+    -- M-Space-Enter => Launch a terminal
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
-    -- launch dmenu
-    , ((modm,               xK_p     ), spawn "dmenu_run")
+    -- M-p => Launch rofi.
+    , ((modm, xK_p), spawn "rofi -show window")
 
-    -- launch gmrun
-    , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
-
-    -- close focused window
+    -- M-Shift-c => Close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
 
-     -- Rotate through the available layout algorithms
+     -- M-Space => Rotate through the available layout algorithms
     , ((modm,               xK_space ), sendMessage NextLayout)
 
-    --  Reset the layouts on the current workspace to default
+    --  M-Shift-Space => Reset the layouts on the current workspace to default
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
 
     -- Resize viewed windows to the correct size
@@ -221,7 +218,7 @@ myWallpaperPath = "~/.vexcited-dotfiles/wallpapers/wallpaper-fullscreen.png"
 
 myStartupHook = do
   spawnOnce $ "feh --bg-fill --bg-center " ++ myWallpaperPath ++ " &"
-  spawnOnce "picom &"
+  spawnOnce "picom --experimental-backend -b &"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
@@ -263,16 +260,15 @@ defaults = def {
 help :: String
 help = unlines ["Modifier key: 'super'.",
     "",
-    "-- launching and killing programs",
-    "mod-Shift-Enter  Launch alacritty",
-    "mod-p            Launch dmenu",
-    "mod-Shift-p      Launch gmrun",
+    "-- Launching and killing programs",
+    "mod-Shift-Enter  Launch a terminal",
+    "mod-p            Launch rofi",
     "mod-Shift-c      Close/kill the focused window",
     "mod-Space        Rotate through the available layout algorithms",
     "mod-Shift-Space  Reset the layouts on the current workSpace to default",
     "mod-n            Resize/refresh viewed windows to the correct size",
     "",
-    "-- move focus up or down the window stack",
+    "-- Move focus up or down the window stack",
     "mod-Tab        Move focus to the next window",
     "mod-Shift-Tab  Move focus to the previous window",
     "mod-j          Move focus to the next window",
@@ -295,15 +291,13 @@ help = unlines ["Modifier key: 'super'.",
     "mod-comma  (mod-,)   Increment the number of windows in the master area",
     "mod-period (mod-.)   Deincrement the number of windows in the master area",
     "",
-    "-- quit, or restart",
+    "-- Quit, or restart",
     "mod-Shift-q  Quit xmonad",
     "mod-q        Restart xmonad",
     "mod-[1..9]   Switch to workSpace N",
     "",
     "-- Workspaces & screens",
     "mod-Shift-[1..9]   Move client to workspace N",
-    "mod-{w,e,r}        Switch to physical/Xinerama screens 1, 2, or 3",
-    "mod-Shift-{w,e,r}  Move client to screen 1, 2, or 3",
     "",
     "-- Mouse bindings: default actions bound to mouse events",
     "mod-button1  Set the window to floating mode and move by dragging",
