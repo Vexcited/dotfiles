@@ -49,6 +49,7 @@ echo "Installing NVM..."
 yay -S nvm
 
 echo "Symlinking dotfiles..."
+mkdir -p $HOME/.config
 
 # Xorg
 echo -e "\tSyncing xorg..."
@@ -56,9 +57,9 @@ ln -s $DOTFILES/xorg/Xresources $HOME/.Xresources
 ln -s $DOTFILES/xorg/xinitrc $HOME/.xinitrc
 
 # Alacritty
-echo -e "\tSyncing alacritty..."
-mkdir -p $HOME/.config/alacritty
-ln -s $DOTFILES/alacritty/alacritty.yml $HOME/.config/alacritty/.alacritty.yml
+echo -e "\tSyncing alacritty... (directory - in ~/.config/alacritty - is removed)"
+rm -rf $HOME/.config/alacritty
+ln -s $DOTFILES/alacritty $HOME/.config/alacritty
 
 # Bash
 echo -e "\tSyncing bash... (default configurations - in ~/.bashrc and ~/.bash_profile - are removed)"

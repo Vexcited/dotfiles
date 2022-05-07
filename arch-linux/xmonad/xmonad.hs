@@ -1,4 +1,6 @@
 import XMonad
+import XMonad.Util.SpawnOnce
+
 import Data.Monoid
 import System.Exit
 
