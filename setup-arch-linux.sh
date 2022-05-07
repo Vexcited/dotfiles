@@ -25,6 +25,7 @@ sudo pacman -S \
   pkgconf \
   xmonad \
   xmonad-contrib \
+  xmobar \
   picom \
   feh \
   rofi
@@ -82,6 +83,11 @@ ln -s $DOTFILES/rofi $HOME/.config/rofi
 echo -e "\tSyncing picom..."
 rm -rf $HOME/.config/picom
 ln -s $DOTFILES/picom $HOME/.config/picom
+
+# Xmobar
+echo -e "\tSyncing xmobar..."
+rm -rf $HOME/.config/xmobar
+ln -s $DOTFILES/xmobar $HOME/.config/xmobar
 
 echo "Done !"
 exit 0
