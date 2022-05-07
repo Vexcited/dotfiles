@@ -24,7 +24,9 @@ sudo pacman -S \
   wget \
   pkgconf \
   xmonad \
-  xmonad-contrib
+  xmonad-contrib \
+  picom \
+  nitrogen
 
 echo "Installing yay..."
 sudo pacman -S --needed base-devel git

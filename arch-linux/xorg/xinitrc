@@ -31,4 +31,4 @@ fi
 xsetroot -cursor_name left_ptr
 xset r rate 300 50
 
-exec $HOME/.cache/xmonad/xmonad-x86_64-linux
+exec xmonad
