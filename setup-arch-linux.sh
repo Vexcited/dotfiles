@@ -28,7 +28,8 @@ sudo pacman -S \
   xmobar \
   picom \
   feh \
-  rofi
+  rofi \
+  xdotool
 
 echo "Installing yay..."
 sudo pacman -S --needed base-devel git

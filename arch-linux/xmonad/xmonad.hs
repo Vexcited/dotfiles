@@ -18,9 +18,10 @@ import XMonad.Hooks.DynamicLog          ( PP(..)
                                         , xmobarPP
                                         )
 
-
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
+
+import XMonad.Layout.Spacing
 
 import Data.Monoid
 import Data.Maybe
@@ -49,7 +50,7 @@ myBorderWidth = 2
 -- We use the "windows key" as modmask..
 myModMask = mod4Mask
 
-myWorkspaces = ["web", "dev", "msc", "dsc"]
+myWorkspaces = ["www", "dev", "game", "music", "discord"]
 myWorkspaceIndices = M.fromList $ zip myWorkspaces [1 ..]
 
 -- Make workspaces clickable.
@@ -119,12 +120,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Deincrement the number of windows in the master area
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
 
-    -- Toggle the status bar gap
-    -- Use this binding with avoidStruts from Hooks.ManageDocks.
-    -- See also the statusBar function from Hooks.DynamicLog.
-    --
-    -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
-
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
 
@@ -182,7 +177,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
+myLayout = avoidStruts $ spacing 10 $ (tiled ||| Mirror tiled ||| Full)
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -218,19 +213,12 @@ myManageHook = composeAll
     , className =? "download"      --> doFloat
     , className =? "error"         --> doFloat
     , className =? "notification"  --> doFloat
-    , className =? "discord"       --> doShift (myWorkspaces !! 3)]
+    , className =? "discord"       --> doShift (myWorkspaces !! 4)]
 
 ------------------------------------------------------------------------
 -- Event handling
-
--- * EwmhDesktops users should change this to ewmhDesktopsEventHook
---
--- Defines a custom handler function for X Events. The function should
--- return (All True) if the default handler is to be run afterwards. To
--- combine event hooks use mappend or mconcat from Data.Monoid.
---
 myEventHook = dynamicPropertyChange "WM_CLASS"
-  $ composeAll [className =? "Spotify" --> doShift (myWorkspaces !! 2)]
+  $ composeAll [className =? "Spotify" --> doShift (myWorkspaces !! 3)]
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -282,12 +270,14 @@ defaults xmproc = def {
 	logHook            =
           workspaceHistoryHook <+> dynamicLogWithPP xmobarPP
             { ppOutput          = \x -> hPutStrLn xmproc x
-            , ppCurrent         = xmobarColor "#A3BE8C" "" . wrap "[" "]"
-            , ppVisible         = xmobarColor "#A3BE8C" "" . clickable
+            , ppCurrent         = xmobarColor "#88C0D0" ""
+	                        . wrap "<box type=Bottom width=2 mb=0 color=#88C0D0>" "</box>"
+				-- . wrap "[" "]"
+            , ppVisible         = xmobarColor "#88C0D0" "" . clickable
             , ppHidden          = xmobarColor "#81A1C1" "" . clickable
-            , ppHiddenNoWindows = xmobarColor "#B48EAD" "" . clickable
+            , ppHiddenNoWindows = xmobarColor "#5E81AC" "" . clickable
             , ppTitle           = xmobarColor "#B3AFC2" "" . shorten 60
-            , ppSep             = " | "
+            , ppSep             = "<fc=#4C566A> <fn=1>|</fn> </fc>"
             , ppOrder           = \(ws : t : ex) -> [ws] ++ ex
             }
     }

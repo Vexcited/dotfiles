@@ -1,0 +1,82 @@
+-- http://projects.haskell.org/xmobar/
+
+Config { font    = "xft:Hack Nerd Font:weight=bold:pixelsize=14:antialias=true:hinting=true"
+       , additionalFonts = [
+                             "xft:Hack Nerd Font:pixelsize=14:antialias=true:hinting=true"
+                           ]
+       , bgColor = "#2E3440"
+       , fgColor = "#B3AFC2"
+       , position = Top
+       , lowerOnStart = True
+       , hideOnStart = False
+       , allDesktops = True
+       , persistent = True
+       , commands = [
+                      -- Time and date
+                      Run Date "<fc=#D8DEE9>%d/%m/%Y</fc> - <fc=#E5E9F0>%H:%M</fc>" "date" 50
+                      
+		      -- Current network interface up and down.
+		      -- Aliases to "dynnetwork".
+                    , Run DynNetwork [
+		             "--template"   , "<dev>: down(<rx><fc=#D8DEE9>kB/s</fc>) up(<tx><fc=#D8DEE9>kB/s</fc>)"
+                             , "--Low"      , "2000"       -- units: kB/s
+                             , "--High"     , "20000"       -- units: kB/s
+                             , "--low"      , "#8FBCBB"
+                             , "--normal"   , "#81A1C1"
+                             , "--high"     , "#BF616A"
+			     ] 10
+                      
+                    , Run Cpu [
+		             "--template"   , "cpu: <total><fc=#D8DEE9>%</fc>"
+                             , "--Low"      , "50"         -- units: %
+                             , "--High"     , "85"         -- units: %
+                             , "--low"      , "#8FBCBB"
+                             , "--normal"   , "#81A1C1"
+                             , "--high"     , "#BF616A"
+                             ] 10
+		      
+		      -- Ram used number and percent
+                    , Run Memory [
+		             "--template"   , "mem: <usedratio><fc=#D8DEE9>%</fc>"
+                             , "--Low"      , "25"        -- units: %
+                             , "--High"     , "80"        -- units: %
+                             , "--low"      , "#8FBCBB"
+                             , "--normal"   , "#81A1C1"
+                             , "--high"     , "#BF616A"
+			     ] 10
+                     
+		     -- Disk space free
+                    , Run DiskU [("/", "ssd: <fc=#81A1C1><usedp></fc><fc=#D8DEE9>%</fc>")] [] 60
+
+		      -- Prints out the left side items such as workspaces, layout, etc.
+                    , Run UnsafeStdinReader
+                    
+                    , Run Battery
+                       [ "--template" , "<acstatus><fc=#D8DEE9>%</fc>"
+                             , "--Low"      , "10"        -- units: %
+                             , "--High"     , "80"        -- units: %
+                             
+			     , "--" -- battery specific options
+                                 -- Discharging status - use icons
+                                 
+				 , "-o"           , ""
+                                 , "--lows"     , ": <fc=#BF616A><left></fc>"
+                                 , "--mediums"  , ": <fc=#81A1C1><left></fc>"
+                                 , "--highs"    , ": <fc=#8FBCBB><left></fc>"
+                                 
+				 -- AC "on" status
+                                 , "-O"  , ": <fc=#8FBCBB><left></fc>"
+                                 
+				 -- Charged status
+                                 , "-i"  , ": <fc=#8FBCBB>100</fc>"
+                                 
+				 , "-a", "notify-send -u critical 'Battery running out !'"
+                                 , "-A", "20"
+                    ] 50
+
+		    , Run Com "/home/vexcited/.config/xmobar/trayer.sh" [] "trayerpad" 10
+		    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = " %UnsafeStdinReader% }{ %cpu% <fc=#666666>|</fc> %memory% <fc=#666666>|</fc> %disku% <fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc> %battery% <fc=#666666>|</fc> %date% %trayerpad% "
+       }
