@@ -42,14 +42,17 @@ yay -S nerd-fonts-hack
 echo "Login to GitHub... Follow the instructions given by the GitHub CLI."
 gh auth login
 
-echo "Setting ZSH as default shell... (it will maybe ask you a password)"
-chsh -s $(which zsh)
-
 echo "Installing oh-my-zsh..."
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
+echo "Installing powerlevel10k omz theme..."
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$Hcustom}/themes/powerlevel10k
+
 echo "Installing NVM..."
 yay -S nvm
+
+echo "Installing Google Chrome"
+yay -S google-chrome
 
 echo "Symlinking dotfiles..."
 mkdir -p $HOME/.config
@@ -69,6 +72,12 @@ echo -e "\tSyncing bash... (default configurations - in ~/.bashrc and ~/.bash_pr
 rm -rf $HOME/.bashrc $HOME/.bash_profile
 ln -s $DOTFILES/bash/bashrc $HOME/.bashrc
 ln -s $DOTFILES/bash/bash_profile $HOME/.bash_profile
+
+# ZSH
+echo -e "\tSyncing zsh... (default configurations - in ~/.zshrc - are removed)"
+rm -rf $HOME/.zshrc
+ln -s $DOTFILES/zsh/zshrc $HOME/.zshrc
+ln -s $DOTFILES/zsh/.p10k.zsh $HOME/.p10k.zsh
 
 # Xmonad
 echo -e "\tSyncing xmonad... (default configuration - in ~/.xmonad - is removed)"
