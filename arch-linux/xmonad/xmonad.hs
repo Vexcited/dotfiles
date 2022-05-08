@@ -1,8 +1,33 @@
 import XMonad
+
+import XMonad.Hooks.WorkspaceHistory
+import XMonad.Hooks.DynamicProperty
+import XMonad.Hooks.EwmhDesktops
+
+import XMonad.Hooks.ManageDocks         ( ToggleStruts(..)
+                                        , avoidStruts
+                                        , docks
+                                        , manageDocks
+                                        )
+
+import XMonad.Hooks.DynamicLog          ( PP(..)
+                                        , dynamicLogWithPP
+                                        , shorten
+                                        , wrap
+                                        , xmobarColor
+                                        , xmobarPP
+                                        )
+
+
 import XMonad.Util.SpawnOnce
+import XMonad.Util.Run
 
 import Data.Monoid
+import Data.Maybe
+import Data.Tree
+
 import System.Exit
+import System.IO
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -25,6 +50,11 @@ myBorderWidth = 2
 myModMask = mod4Mask
 
 myWorkspaces = ["web", "dev", "msc", "dsc"]
+myWorkspaceIndices = M.fromList $ zip myWorkspaces [1 ..]
+
+-- Make workspaces clickable.
+clickable ws = "<action=xdotool key super+" ++ show i ++ ">" ++ ws ++ "</action>"
+  where i = fromJust $ M.lookup ws myWorkspaceIndices
 
 -- Border colors for unfocused and focused windows, respectively.
 myNormalBorderColor  = "#2E3440"
@@ -152,7 +182,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = tiled ||| Mirror tiled ||| Full
+myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -182,10 +212,13 @@ myLayout = tiled ||| Mirror tiled ||| Full
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "MPlayer"        --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    [ className =? "confirm"       --> doFloat
+    , className =? "file_progress" --> doFloat
+    , className =? "dialog"        --> doFloat
+    , className =? "download"      --> doFloat
+    , className =? "error"         --> doFloat
+    , className =? "notification"  --> doFloat
+    , className =? "discord"       --> doShift (myWorkspaces !! 3)]
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -196,15 +229,8 @@ myManageHook = composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = mempty
-
-------------------------------------------------------------------------
--- Status bars and logging
-
--- Perform an arbitrary action on each internal state change or X event.
--- See the 'XMonad.Hooks.DynamicLog' extension for examples.
---
-myLogHook = return ()
+myEventHook = dynamicPropertyChange "WM_CLASS"
+  $ composeAll [className =? "Spotify" --> doShift (myWorkspaces !! 2)]
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -222,10 +248,10 @@ myStartupHook = do
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
-
--- Run xmonad with the settings you specify. No need to modify this.
---
-main = xmonad defaults
+main :: IO ()
+main = do
+  xmproc <- spawnPipe "xmobar -x 0 /home/vexcited/.config/xmobar/xmobarrc"
+  xmonad $ ewmh $ docks $ defaults xmproc
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
@@ -233,7 +259,7 @@ main = xmonad defaults
 --
 -- No need to modify this.
 --
-defaults = def {
+defaults xmproc = def {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
@@ -252,8 +278,18 @@ defaults = def {
         layoutHook         = myLayout,
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
-        logHook            = myLogHook,
-        startupHook        = myStartupHook
+        startupHook        = myStartupHook,
+	logHook            =
+          workspaceHistoryHook <+> dynamicLogWithPP xmobarPP
+            { ppOutput          = \x -> hPutStrLn xmproc x
+            , ppCurrent         = xmobarColor "#A3BE8C" "" . wrap "[" "]"
+            , ppVisible         = xmobarColor "#A3BE8C" "" . clickable
+            , ppHidden          = xmobarColor "#81A1C1" "" . clickable
+            , ppHiddenNoWindows = xmobarColor "#B48EAD" "" . clickable
+            , ppTitle           = xmobarColor "#B3AFC2" "" . shorten 60
+            , ppSep             = " | "
+            , ppOrder           = \(ws : t : ex) -> [ws] ++ ex
+            }
     }
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
