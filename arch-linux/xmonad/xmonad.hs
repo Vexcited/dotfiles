@@ -70,7 +70,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
     -- M-p => Launch rofi.
-    , ((modm, xK_p), spawn "rofi -show drun")
+    , ((0, xK_Super_L), spawn "rofi -show drun")
 
     -- M-Shift-c => Close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
