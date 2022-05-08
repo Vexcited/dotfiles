@@ -74,9 +74,10 @@ ln -s $DOTFILES/bash/bashrc $HOME/.bashrc
 ln -s $DOTFILES/bash/bash_profile $HOME/.bash_profile
 
 # ZSH
-echo -e "\tSyncing zsh... (default configurations - in ~/.zshrc - are removed)"
-rm -rf $HOME/.zshrc
+echo -e "\tSyncing zsh... (default configurations - in ~/.zshrc and ~/.zprofile - are removed)"
+rm -rf $HOME/.zshrc $HOME/.zprofile
 ln -s $DOTFILES/zsh/zshrc $HOME/.zshrc
+ln -s $DOTFILES/zsh/zprofile $HOME/.zprofile
 ln -s $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
 
 # Xmonad
