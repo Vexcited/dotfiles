@@ -1,5 +1,5 @@
 configuration {
-	modi: "window";
+	modi: "drun,window";
 /*	font: "mono 12";*/
 /*	location: 0;*/
 /*	yoffset: 0;*/

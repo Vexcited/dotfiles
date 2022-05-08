@@ -74,7 +74,7 @@ Config { font    = "xft:Hack Nerd Font:weight=bold:pixelsize=14:antialias=true:h
                                  , "-A", "20"
                     ] 50
 
-		    , Run Com "/home/vexcited/.config/xmobar/trayer.sh" [] "trayerpad" 10
+		    , Run Com "~/.config/xmobar/scripts/trayer-padding-icon.sh" [] "trayerpad" 10
 		    ]
        , sepChar = "%"
        , alignSep = "}{"

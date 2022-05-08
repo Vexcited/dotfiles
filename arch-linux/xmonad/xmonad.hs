@@ -69,8 +69,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- M-Space-Enter => Launch a terminal
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
-    -- M => Launch rofi.
-    , ((0, xK_Super_L), spawn "rofi -show drun")
+    -- M-p => Launch rofi.
+    , ((modm, xK_p), spawn "rofi -show drun")
+
+    -- Alt-Tab => Show windows in rofi.
+    , ((mod1Mask, xK_Tab), spawn "rofi -show window") 
 
     -- M-Shift-c => Close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
