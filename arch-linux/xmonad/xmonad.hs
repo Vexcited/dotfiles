@@ -69,7 +69,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- M-Space-Enter => Launch a terminal
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
-    -- M-p => Launch rofi.
+    -- M => Launch rofi.
     , ((0, xK_Super_L), spawn "rofi -show drun")
 
     -- M-Shift-c => Close focused window
@@ -228,11 +228,12 @@ myEventHook = dynamicPropertyChange "WM_CLASS"
 -- per-workspace layout choices.
 
 myWallpaperPath :: String
-myWallpaperPath = "~/.vexcited-dotfiles/wallpapers/wallpaper-fullscreen.png"
+myWallpaperPath = "~/.vexcited-dotfiles/wallpapers/wallpaper-2.png"
 
 myStartupHook = do
   spawnOnce $ "feh --bg-fill --bg-center " ++ myWallpaperPath ++ " &"
   spawnOnce "picom --experimental-backend -b &"
+  spawnOnce "~/.xmonad/xmonad/scripts/trayer.sh"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
