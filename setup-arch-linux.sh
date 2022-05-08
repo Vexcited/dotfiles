@@ -29,7 +29,8 @@ sudo pacman -S \
   picom \
   feh \
   rofi \
-  xdotool
+  xdotool \ 
+  trayer
 
 echo "Installing yay..."
 sudo pacman -S --needed base-devel git
@@ -84,6 +85,7 @@ ln -s $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
 echo -e "\tSyncing xmonad... (default configuration - in ~/.xmonad - is removed)"
 rm -rf $HOME/.xmonad
 ln -s $DOTFILES/xmonad $HOME/.xmonad
+chmod +x $HOME/.xmonad/scripts/
 
 # Rofi
 echo -e "\tSyncing rofi..."
@@ -100,11 +102,19 @@ echo -e "\tSyncing xmobar..."
 rm -rf $HOME/.config/xmobar
 ln -s $DOTFILES/xmobar $HOME/.config/xmobar
 
-echo "Installing neovim configuration..."
+echo "Add Node LTS to NVM..."
+source /usr/share/nvm/init-nvm.sh
+nvm install --lts
+nvm use --lts
+
+echo "Installing Vim-Plug..."
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
+echo -e "\tSyncing nvim..."
+mkdir -p $HOME/.config/nvim
+rm -rf $HOME/.config/nvim/init.vim
+ln -S $DOFTFILES/nvim/init.vim $HOME/.config/nvim/init.vim
 
-
-echo "Done !"
-exit 0
+echo "Done ! The system will reboot now..."
+sudo reboot
