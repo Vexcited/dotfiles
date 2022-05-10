@@ -3,6 +3,7 @@ import XMonad
 import XMonad.Hooks.WorkspaceHistory
 import XMonad.Hooks.DynamicProperty
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.SetWMName
 
 import XMonad.Hooks.ManageDocks         ( ToggleStruts(..)
                                         , avoidStruts
@@ -237,6 +238,7 @@ myWallpaperPath :: String
 myWallpaperPath = "~/.vexcited-dotfiles/wallpapers/wallpaper-2.png"
 
 myStartupHook = do
+  setWMName "LG3D"
   spawnOnce $ "feh --bg-fill --bg-center " ++ myWallpaperPath ++ " &"
   spawnOnce "picom --experimental-backend -b &"
   spawnOnce "~/.xmonad/scripts/trayer.sh &"
