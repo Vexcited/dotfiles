@@ -74,9 +74,10 @@ Config { font    = "xft:Hack Nerd Font:weight=bold:pixelsize=14:antialias=true:h
                                  , "-A", "20"
                     ] 50
 
-		    , Run Com "~/.config/xmobar/scripts/trayer-padding-icon.sh" [] "trayerpad" 10
+		    , Run Com "/home/vexcited/.config/xmobar/scripts/trayer-padding-icon.sh" [] "trayerpad" 10
+		    , Run Com "/home/vexcited/.config/xmobar/scripts/getlayout.sh" [] "keyboardlayout" 10
 		    ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %UnsafeStdinReader% }{ %cpu% <fc=#666666>|</fc> %memory% <fc=#666666>|</fc> %disku% <fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc> %battery% <fc=#666666>|</fc> %date% %trayerpad% "
+       , template = " %UnsafeStdinReader% }{ %cpu% <fc=#666666>|</fc> %memory% <fc=#666666>|</fc> %disku% <fc=#666666>|</fc> kbd: <fc=#8FBCBB>%keyboardlayout%</fc> <fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc> audio: .. <fc=#666666>|</fc> %battery% <fc=#666666>|</fc> %date% <fc=#666666>|</fc> %trayerpad%"
        }

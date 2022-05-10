@@ -70,10 +70,13 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
     -- M-p => Launch rofi.
-    , ((modm, xK_p), spawn "rofi -show drun")
+    , ((modm,               xK_p     ), spawn "rofi -show drun")
 
     -- Alt-Tab => Show windows in rofi.
-    , ((mod1Mask, xK_Tab), spawn "rofi -show window") 
+    , ((mod1Mask,           xK_Tab   ), spawn "rofi -show window") 
+
+    -- M-Shift-l => Switch keyboard layout between US-Intl <-> French
+    , ((modm .|. shiftMask, xK_l     ), spawn "~/.xmonad/scripts/switchlayout.sh")
 
     -- M-Shift-c => Close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -236,13 +239,13 @@ myWallpaperPath = "~/.vexcited-dotfiles/wallpapers/wallpaper-2.png"
 myStartupHook = do
   spawnOnce $ "feh --bg-fill --bg-center " ++ myWallpaperPath ++ " &"
   spawnOnce "picom --experimental-backend -b &"
-  spawnOnce "~/.xmonad/xmonad/scripts/trayer.sh"
+  spawnOnce "~/.xmonad/scripts/trayer.sh &"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 main :: IO ()
 main = do
-  xmproc <- spawnPipe "xmobar -x 0 /home/vexcited/.config/xmobar/xmobarrc"
+  xmproc <- spawnPipe "xmobar -x 0 ~/.config/xmobar/xmobarrc"
   xmonad $ ewmh $ docks $ defaults xmproc
 
 -- A structure containing your configuration settings, overriding
@@ -297,6 +300,7 @@ help = unlines ["Modifier key: 'super'.",
     "mod-Space        Rotate through the available layout algorithms",
     "mod-Shift-Space  Reset the layouts on the current workSpace to default",
     "mod-n            Resize/refresh viewed windows to the correct size",
+    "alt-tab          Launch rofi in window mode",
     "",
     "-- Move focus up or down the window stack",
     "mod-Tab        Move focus to the next window",
@@ -328,6 +332,9 @@ help = unlines ["Modifier key: 'super'.",
     "",
     "-- Workspaces & screens",
     "mod-Shift-[1..9]   Move client to workspace N",
+    "",
+    "-- Others",
+    "mod-Shift-l  Switch keyboard layout between US-INTL <-> FR",
     "",
     "-- Mouse bindings: default actions bound to mouse events",
     "mod-button1  Set the window to floating mode and move by dragging",

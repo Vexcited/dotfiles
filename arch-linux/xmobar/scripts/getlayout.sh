@@ -3,8 +3,8 @@
 LAYOUT=$(setxkbmap -query | grep layout | awk '{print $2}')
 
 if [ $LAYOUT == "us" ]; then
-  setxkbmap -layout fr
+  echo "US"
 else
-  setxkbmap -layout us -variant intl
+  echo "FR"
 fi
 
