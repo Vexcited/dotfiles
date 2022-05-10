@@ -85,7 +85,8 @@ ln -s $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
 echo -e "\tSyncing xmonad... (default configuration - in ~/.xmonad - is removed)"
 rm -rf $HOME/.xmonad
 ln -s $DOTFILES/xmonad $HOME/.xmonad
-chmod +x $HOME/.xmonad/scripts/
+chmod +x $HOME/.xmonad/scripts/switchlayout.sh
+chmod +x $HOME/.xmonad/scripts/trayer.sh
 
 # Rofi
 echo -e "\tSyncing rofi..."
@@ -101,6 +102,8 @@ ln -s $DOTFILES/picom $HOME/.config/picom
 echo -e "\tSyncing xmobar..."
 rm -rf $HOME/.config/xmobar
 ln -s $DOTFILES/xmobar $HOME/.config/xmobar
+chmod +x $HOME/.config/xmobar/scripts/getlayout.sh
+chmod +x $HOME/.config/xmobar/scripts/trayer-padding-icon.sh
 
 echo "Add Node LTS to NVM..."
 source /usr/share/nvm/init-nvm.sh
