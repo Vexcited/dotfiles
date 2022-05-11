@@ -154,7 +154,7 @@ chmod +x $HOME/.xmonad/scripts/trayer.sh
 # Rofi
 echo -e "\tSyncing rofi..."
 mkdir -p $HOME/.config/rofi
-create_symlink $DOTFILES/rofi/rofi.rasi $HOME/.config/rofi/rofi.rasi
+create_symlink $DOTFILES/rofi/config.rasi $HOME/.config/rofi/config.rasi
 create_symlink $DOTFILES/rofi/nord.rasi $HOME/.config/rofi/nord.rasi
 
 # Picom
