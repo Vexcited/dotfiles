@@ -1,5 +1,6 @@
 #!/bin/sh
 
+clear
 echo "-- Welcome to the Arch-Linux setup of Vexcited's dotfiles."
 echo -e "Configuration from https://github.com/vexcited/dotfiles\n"
 
@@ -76,7 +77,7 @@ fi
 
 if [ ! -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]; then
   echo "Installing powerlevel10k oh-my-zsh custom theme..."
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$Hcustom}/themes/powerlevel10k
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
 fi
 
 nvm -v &> /dev/null
@@ -85,10 +86,10 @@ if [[ $? != 0 ]]; then
   yay -S nvm
 fi
 
-if ! command -v google-chrome-stable &> /dev/null; then
-  echo "Installing Google Chrome Stable"
-  yay -S google-chrome
-fi
+#if ! command -v google-chrome-stable &> /dev/null; then
+#  echo "Installing Google Chrome Stable"
+#  yay -S google-chrome
+#fi
 
 echo "Symlinking dotfiles..."
 echo "Warning: already existing configurations will be removed !"
@@ -125,7 +126,7 @@ create_symlink $DOTFILES/xorg/xinitrc $HOME/.xinitrc
 # Alacritty
 echo -e "\tSyncing alacritty..."
 mkdir -p $HOME/.config/alacritty
-create_symlink $DOTFILES/alacritty $HOME/.config/alacritty
+create_symlink $DOTFILES/alacritty/* $HOME/.config/alacritty
 
 # Bash
 echo -e "\tSyncing bash..."
@@ -141,24 +142,24 @@ create_symlink $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
 # Xmonad
 echo -e "\tSyncing xmonad..."
 mkdir -p $HOME/.xmonad
-create_symlink $DOTFILES/xmonad $HOME/.xmonad
+create_symlink $DOTFILES/xmonad/* $HOME/.xmonad
 chmod +x $HOME/.xmonad/scripts/switchlayout.sh
 chmod +x $HOME/.xmonad/scripts/trayer.sh
 
 # Rofi
 echo -e "\tSyncing rofi..."
 mkdir -p $HOME/.config/rofi
-create_symlink $DOTFILES/rofi $HOME/.config/rofi
+create_symlink $DOTFILES/rofi/* $HOME/.config/rofi
 
 # Picom
 echo -e "\tSyncing picom..."
 mkdir -p $HOME/.config/picom
-create_symlink $DOTFILES/picom $HOME/.config/picom
+create_symlink $DOTFILES/picom/* $HOME/.config/picom
 
 # Xmobar
 echo -e "\tSyncing xmobar..."
 mkdir -p $HOME/.config/xmobar
-create_symlink $DOTFILES/xmobar $HOME/.config/xmobar
+create_symlink $DOTFILES/xmobar/* $HOME/.config/xmobar
 chmod +x $HOME/.config/xmobar/scripts/getlayout.sh
 chmod +x $HOME/.config/xmobar/scripts/trayer-padding-icon.sh
 chmod +x $HOME/.config/xmobar/scripts/getvolume.sh
