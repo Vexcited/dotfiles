@@ -11,31 +11,55 @@ then
   exit 1
 fi
 
-echo "Installing cool packages... (it will maybe ask you a password)"
+
+
+
+echo "Installing pacman packages... (it will maybe ask you a password)"
+
+install_package () {
+  package=$1
+
+  if pacman -Qi $package > /dev/null ; then
+    echo -e "\t$package is installed. Skipping."
+  else
+    echo -e "\t$package is not installed. Installing..."
+    sudo pacman -S $package
+  fi
+}
+
+# Update and upgrade.
 sudo pacman -Syu
-sudo pacman -S \
-  github-cli \
-  xdg-utils \
-  neovim \
-  discord \
-  alacritty \
-  zsh \
-  curl \
-  wget \
-  pkgconf \
-  xmonad \
-  xmonad-contrib \
-  xmobar \
-  picom \
-  feh \
-  rofi \
-  xdotool \ 
-  trayer
+
+packages_to_install=(
+  "github-cli"
+  "xdg-utils"
+  "neovim"
+  "discord"
+  "alacritty"
+  "zsh"
+  "curl"
+  "wget"
+  "pkgconf"
+  "xmonad"
+  "xmonad-contrib"
+  "xmobar"
+  "picom"
+  "feh"
+  "rofi"
+  "xdotool" 
+  "trayer"
+  "git"
+  "zsh"
+)
+
+for package in ${packages_to_install[@]}; do
+  install_package $package
+done
 
 echo "Installing yay..."
-sudo pacman -S --needed base-devel git
-git clone https://aur.archlinux.org/yay-git.git && cd yay-git
-makepkg -si && cd .. && rm -rf yay-git
+git clone https://aur.archlinux.org/yay-git.git && \ # Cloning...
+cd yay-git && makepkg -si && \ # Installation...
+cd .. && rm -rf yay-git # Cleaning...
 
 echo "Installing Hack Nerd Font..."
 yay -S nerd-fonts-hack
