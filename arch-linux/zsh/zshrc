@@ -66,8 +66,8 @@ source $ZSH/oh-my-zsh.sh
 # Language
 export LANG=en_US.UTF-8
 
-# Source for NVM.
-source /usr/share/nvm/init-nvm.sh
+# Load aliases.
+. ~/.aliases
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

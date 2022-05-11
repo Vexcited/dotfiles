@@ -1,0 +1,6 @@
+# Load NVM.
+source /usr/share/nvm/init-nvm.sh
+
+# Aliases
+alias gp="git push"
+
