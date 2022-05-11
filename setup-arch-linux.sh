@@ -108,7 +108,7 @@ create_symlink () {
       fi
     else
       echo "'$targetLink' link was broken. Creating a new one..."
-      rm $targetLink
+      rm -rf $targetLink
       ln -sf $dotfilesLink $targetLink
     fi
   else
@@ -174,7 +174,7 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 
 echo -e "\tSyncing nvim..."
 mkdir -p $HOME/.config/nvim
-create_symlink $DOFTFILES/nvim/init.vim $HOME/.config/nvim/init.vim
+create_symlink $DOTFILES/nvim/init.vim $HOME/.config/nvim/init.vim
 nvim +"PlugInstall" +qall
 nvim +"CocInstall -sync coc-tsserver coc-json coc-eslint coc-html coc-css" +qall
 nvim +"CocUpdateSync" +qall
