@@ -126,7 +126,11 @@ create_symlink $DOTFILES/xorg/xinitrc $HOME/.xinitrc
 # Alacritty
 echo -e "\tSyncing alacritty..."
 mkdir -p $HOME/.config/alacritty
-create_symlink $DOTFILES/alacritty/* $HOME/.config/alacritty
+create_symlink $DOTFILES/alacritty/alacritty.yml $HOME/.config/alacritty/alacritty.yml
+
+# sh (.aliases)
+echo -e "\tSyncing sh (.aliases)..."
+create_symlink $DOTFILES/sh/aliases $HOME/.aliases
 
 # Bash
 echo -e "\tSyncing bash..."
@@ -140,26 +144,29 @@ create_symlink $DOTFILES/zsh/zprofile $HOME/.zprofile
 create_symlink $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
 
 # Xmonad
-echo -e "\tSyncing xmonad..."
+echo -e "\tSyncing xmonad and its scripts..."
 mkdir -p $HOME/.xmonad
-create_symlink $DOTFILES/xmonad/* $HOME/.xmonad
+create_symlink $DOTFILES/xmonad/xmonad.hs $HOME/.xmonad/xmonad.hs
+create_symlink $DOTFILES/xmonad/scripts $HOME/.xmonad/scripts
 chmod +x $HOME/.xmonad/scripts/switchlayout.sh
 chmod +x $HOME/.xmonad/scripts/trayer.sh
 
 # Rofi
 echo -e "\tSyncing rofi..."
 mkdir -p $HOME/.config/rofi
-create_symlink $DOTFILES/rofi/* $HOME/.config/rofi
+create_symlink $DOTFILES/rofi/rofi.rasi $HOME/.config/rofi/rofi.rasi
+create_symlink $DOTFILES/rofi/nord.rasi $HOME/.config/rofi/nord.rasi
 
 # Picom
 echo -e "\tSyncing picom..."
 mkdir -p $HOME/.config/picom
-create_symlink $DOTFILES/picom/* $HOME/.config/picom
+create_symlink $DOTFILES/picom/picom.conf $HOME/.config/picom/picom.conf
 
 # Xmobar
 echo -e "\tSyncing xmobar..."
 mkdir -p $HOME/.config/xmobar
-create_symlink $DOTFILES/xmobar/* $HOME/.config/xmobar
+create_symlink $DOTFILES/xmobar/xmobarrc $HOME/.config/xmobar/xmobarrc
+create_symlink $DOTFILES/xmobar/scripts $HOME/.config/xmobar/scripts
 chmod +x $HOME/.config/xmobar/scripts/getlayout.sh
 chmod +x $HOME/.config/xmobar/scripts/trayer-padding-icon.sh
 chmod +x $HOME/.config/xmobar/scripts/getvolume.sh
