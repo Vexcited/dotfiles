@@ -79,7 +79,8 @@ if [ ! -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]; then
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$Hcustom}/themes/powerlevel10k
 fi
 
-if ! command -v nvm &> /dev/null; then
+nvm -v &> /dev/null
+if [[ $? != 0 ]]; then
   echo "Installing NVM..."
   yay -S nvm
 fi
@@ -103,17 +104,16 @@ create_symlink () {
         echo "'$targetLink' already exists. Skipping..."
       else
 	echo "'$targetLink' is alrady linked to another file. Replacing it..."
-	unlink $targetLink
 	ln -sf $dotfilesLink $targetLink
       fi
     else
       echo "'$targetLink' link was broken. Creating a new one..."
-      unlink $targetLink
-      ln -s $dotfilesLink $targetLink
+      rm $targetLink
+      ln -sf $dotfilesLink $targetLink
     fi
   else
     echo "'$targetLink' doesn't exists. Creating it..."
-    ln -s $dotfilesLink $targetLink
+    ln -sf $dotfilesLink $targetLink
   fi
 }
 
