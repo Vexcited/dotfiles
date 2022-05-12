@@ -279,9 +279,7 @@ defaults xmproc = def {
 	logHook            =
           workspaceHistoryHook <+> dynamicLogWithPP xmobarPP
             { ppOutput          = \x -> hPutStrLn xmproc x
-            , ppCurrent         = xmobarColor "#88C0D0" ""
-	                        . wrap "<box type=Bottom width=2 mb=0 color=#88C0D0>" "</box>"
-				-- . wrap "[" "]"
+            , ppCurrent         = xmobarColor "#88C0D0" "" . wrap "<box type=Bottom width=2 mb=0 color=#88C0D0>" "</box>"
             , ppVisible         = xmobarColor "#88C0D0" "" . clickable
             , ppHidden          = xmobarColor "#81A1C1" "" . clickable
             , ppHiddenNoWindows = xmobarColor "#5E81AC" "" . clickable

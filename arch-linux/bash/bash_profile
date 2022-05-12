@@ -1,10 +1,7 @@
-# Located at "~/.bash_profile".
-
 # Load bash configuration.
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-# Start desktop environment.
+# Start desktop environment on login.
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ] && [[ "$(tty)" = "/dev/tty1" ]]; then
   exec startx
 fi
-

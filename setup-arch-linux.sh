@@ -49,6 +49,9 @@ packages_to_install=(
   "zsh"
   "alsa-utils"
   "libinput"
+  "gnome-keyring"
+  "libsecret"
+  "libgnome-keyring"
 )
 
 for package in ${packages_to_install[@]}; do

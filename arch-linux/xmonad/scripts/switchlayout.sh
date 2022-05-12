@@ -7,4 +7,3 @@ if [ $LAYOUT == "us" ]; then
 else
   setxkbmap -layout us -variant intl
 fi
-
