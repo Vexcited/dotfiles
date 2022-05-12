@@ -82,16 +82,20 @@ if [ ! -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]; then
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
 fi
 
-nvm -v &> /dev/null
-if [[ $? != 0 ]]; then
+if ! command -v nvm &> /dev/null; then
   echo "Installing NVM..."
   yay -S nvm
 fi
 
-#if ! command -v google-chrome-stable &> /dev/null; then
-#  echo "Installing Google Chrome Stable"
-#  yay -S google-chrome
-#fi
+if ! command -v google-chrome-stable &> /dev/null; then
+  echo "Installing Google Chrome..."
+  yay -S google-chrome
+fi
+
+if ! command -v code &> /dev/null; then
+  echo "Installing Visual Studio Code..."
+  yay -S visual-studio-code-bin
+fi
 
 echo "Symlinking dotfiles..."
 echo "Warning: already existing configurations will be removed !"
@@ -189,5 +193,10 @@ nvim +"PlugInstall" +qall
 nvim +"CocInstall -sync coc-tsserver coc-json coc-eslint coc-html coc-css" +qall
 nvim +"CocUpdateSync" +qall
 
-echo "Done ! The system will reboot now..."
-# sudo reboot
+clear
+echo "Done ! All the configuration was symlinked and installed."
+echo "Now, please reboot your computer with by running"
+echo -e "\tsudo reboot"
+echo ""
+echo "On login, the DE will automatically load."
+echo "More informations on https://github.com/vexcited/dotfiles"
