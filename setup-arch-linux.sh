@@ -47,6 +47,8 @@ packages_to_install=(
   "trayer"
   "git"
   "zsh"
+  "alsa-utils"
+  "libinput"
 )
 
 for package in ${packages_to_install[@]}; do

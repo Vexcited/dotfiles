@@ -4,3 +4,5 @@ source /usr/share/nvm/init-nvm.sh
 # Aliases
 alias gp="git push"
 
+alias wifi_scan="nmcli device wifi"
+alias wifi_connect="sudo nmcli device wifi connect"
