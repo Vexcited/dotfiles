@@ -1,8 +1,12 @@
 # Load NVM.
-source /usr/share/nvm/init-nvm.sh
+source "/usr/share/nvm/init-nvm.sh"
+
+# Load emsdk silently.
+source "/usr/lib/emsdk/emsdk_env.sh" &> /dev/null
 
 # Aliases
 alias gp="git push"
-
 alias wifi_scan="nmcli device wifi"
 alias wifi_connect="sudo nmcli device wifi connect"
+alias vpn_connect="sudo nmcli --ask connection up"
+alias vpn_disconnect="sudo nmcli connection down"

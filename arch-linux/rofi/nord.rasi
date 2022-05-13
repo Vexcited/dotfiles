@@ -13,6 +13,7 @@ configuration {
 	lines: 6;
 	columns: 2;
 
+  display-keys:   "keys: ";
   display-ssh:    "ssh: ";
   display-run:    "run: ";
   display-drun:   "program: ";
