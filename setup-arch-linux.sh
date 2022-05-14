@@ -67,8 +67,8 @@ packages_to_install=(
   "pulseaudio" "pulseaudio-alsa" "pulseaudio-bluetooth"
   "pulsemixer" "pavucontrol"
   
-  # Fix special chars problems
-  "noto-fonts" "noto-fonts-cjk" "noto-fonts-extra"
+  # Fix special chars and emojis problems
+  "noto-fonts-emoji" "noto-fonts" "noto-fonts-cjk" "noto-fonts-extra"
 
   # Notifications
   "libnotify"
