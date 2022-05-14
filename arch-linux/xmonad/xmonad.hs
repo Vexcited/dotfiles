@@ -190,7 +190,6 @@ myManageHook = composeAll
     , className =? "notification"  --> doFloat
 
     , className =? "discord"       --> doShift (myWorkspaces !! 4)
-    , className =? "Steam"         --> doShift (myWorkspaces !! 2)
     
     , isDialog                     --> doFloat
     , isFullscreen                 --> doFullFloat
@@ -200,7 +199,10 @@ myManageHook = composeAll
     ]
 
 myEventHook = dynamicPropertyChange "WM_CLASS"
-  $ composeAll [className =? "Spotify" --> doShift (myWorkspaces !! 3)]
+  $ composeAll [
+    className =? "Spotify" --> doShift (myWorkspaces !! 3)
+  , className =? "Steam" --> doShift (myWorkspaces !! 2)
+  ]
 
 ------------------------------------------------------------------------
 
@@ -242,7 +244,7 @@ defaults xmproc = def {
   logHook            =
     workspaceHistoryHook <+> dynamicLogWithPP xmobarPP
       { ppOutput          = \x -> hPutStrLn xmproc x
-      , ppCurrent         = xmobarColor "#88C0D0" "" . wrap "<box type=Bottom width=2 mb=0 color=#88C0D0>" "</box>"
+      , ppCurrent         = xmobarColor "#88C0D0" "" . wrap "<box type=Bottom width=4 mb=0 color=#88C0D0>" "</box>"
       , ppVisible         = xmobarColor "#88C0D0" "" . clickable
       , ppHidden          = xmobarColor "#81A1C1" "" . clickable
       , ppHiddenNoWindows = xmobarColor "#5E81AC" "" . clickable

@@ -31,28 +31,44 @@ packages_to_install=(
   "github-cli"
   "xdg-utils"
   "neovim"
-  "discord"
   "alacritty"
   "zsh"
   "curl"
   "wget"
   "pkgconf"
+
+  # Window Manager
   "xmonad"
   "xmonad-contrib"
   "xmobar"
+
   "picom"
+
+  # Wallpaper
   "feh"
+
+  # Launcher
   "rofi"
+
   "xdotool" 
-  "trayer"
   "git"
   "zsh"
   "alsa-utils"
   "libinput"
+
   "gnome-keyring"
   "libsecret"
   "libgnome-keyring"
+
+  # Screenshot
   "flameshot"
+
+  # PulseAudio
+  "pulseaudio" "pulseaudio-alsa" "pulseaudio-bluetooth"
+  "pulsemixer" "pavucontrol"
+  
+  # Fix special chars problems
+  "noto-fonts" "noto-fonts-cjk" "noto-fonts-extra"
 )
 
 for package in ${packages_to_install[@]}; do
@@ -70,11 +86,8 @@ fi
 echo "Installing Hack Nerd Font..."
 yay -S nerd-fonts-hack
 
-gh auth status &> /dev/null
-if [[ $? != 0 ]]; then
-  echo "Login to GitHub... Follow the instructions given by the GitHub CLI."
-  gh auth login
-fi
+echo "Installing trayer-srg..."
+yay -S trayer-srg
 
 if [ ! -d $HOME/.oh-my-zsh ]; then
   echo "Installing oh-my-zsh..."
@@ -91,18 +104,20 @@ if ! command -v nvm &> /dev/null; then
   yay -S nvm
 fi
 
-if ! command -v google-chrome-stable &> /dev/null; then
-  echo "Installing Google Chrome..."
-  yay -S google-chrome
-fi
-
 if ! command -v code &> /dev/null; then
   echo "Installing Visual Studio Code..."
   yay -S visual-studio-code-bin
 fi
 
+if ! command -v ly &> /dev/null; then
+  echo "Installing ly (display manager to login)..."
+  yay -S ly
+
+  echo "Enabling ly service..."
+  sudo systemctl enable ly.service
+fi
+
 echo "Symlinking dotfiles..."
-echo "Warning: already existing configurations will be removed !"
 mkdir -p $HOME/.config
 
 create_symlink () {
@@ -114,8 +129,8 @@ create_symlink () {
       if [[ $(readlink $targetLink) == $dotfilesLink ]]; then
         echo "'$targetLink' already exists. Skipping..."
       else
-	echo "'$targetLink' is alrady linked to another file. Replacing it..."
-	ln -sf $dotfilesLink $targetLink
+	      echo "'$targetLink' is alrady linked to another file. Replacing it..."
+	      ln -sf $dotfilesLink $targetLink
       fi
     else
       echo "'$targetLink' link was broken. Creating a new one..."
@@ -132,6 +147,7 @@ create_symlink () {
 echo -e "\tSyncing xorg..."
 create_symlink $DOTFILES/xorg/Xresources $HOME/.Xresources
 create_symlink $DOTFILES/xorg/xinitrc $HOME/.xinitrc
+chmod +x $HOME/.xinitrc
 
 # Alacritty
 echo -e "\tSyncing alacritty..."
