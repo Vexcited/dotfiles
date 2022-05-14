@@ -32,7 +32,11 @@ packages_to_install=(
   "xdg-utils"
   "neovim"
   "alacritty"
+  
   "zsh"
+  "zsh-syntax-highlighting"
+  "zsh-autosuggestions"
+
   "curl"
   "wget"
   "pkgconf"
@@ -101,6 +105,12 @@ fi
 if [ ! -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]; then
   echo "Installing powerlevel10k oh-my-zsh custom theme..."
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
+
+  echo "Installing zsh-syntax-highlighting..."
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+  echo "Installing zsh-autosuggestions..."
+  git clone https://github.com/zsh-users/zsh-autosuggestions.git $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 fi
 
 if ! command -v nvm &> /dev/null; then
@@ -200,6 +210,11 @@ create_symlink $DOTFILES/xmobar/scripts $HOME/.config/xmobar/scripts
 chmod +x $HOME/.config/xmobar/scripts/getlayout.sh
 chmod +x $HOME/.config/xmobar/scripts/trayer-padding-icon.sh
 chmod +x $HOME/.config/xmobar/scripts/getvolume.sh
+
+# Dunst
+echo -e "\tSyncing dunst..."
+mkdir -p $HOME/.config/dunst
+create_symlink $DOTFILES/dunst/dunstrc $HOME/.config/dunst/dunstrc
 
 echo "Add Node LTS to NVM..."
 source /usr/share/nvm/init-nvm.sh
