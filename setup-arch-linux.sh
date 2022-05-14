@@ -52,6 +52,7 @@ packages_to_install=(
   "gnome-keyring"
   "libsecret"
   "libgnome-keyring"
+  "flameshot"
 )
 
 for package in ${packages_to_install[@]}; do

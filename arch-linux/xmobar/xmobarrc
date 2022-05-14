@@ -1,83 +1,122 @@
 -- http://projects.haskell.org/xmobar/
 
-Config { font    = "xft:Hack Nerd Font:weight=bold:pixelsize=18:antialias=true:hinting=true"
-       , additionalFonts = [
-                             "xft:Hack Nerd Font:pixelsize=18:antialias=true:hinting=true"
-                           ]
-       , bgColor = "#2E3440"
-       , fgColor = "#B3AFC2"
-       , position = Top
-       , lowerOnStart = True
-       , hideOnStart = False
-       , allDesktops = True
-       , persistent = True
-       , commands = [
-                      -- Time and date
-                      Run Date "<fc=#D8DEE9>%d/%m/%Y</fc> - <fc=#E5E9F0>%H:%M</fc>" "date" 50
+Config {
+  font = "xft:Hack Nerd Font:weight=bold:pixelsize=18:antialias=true:hinting=true"
+  , additionalFonts = [
+    "xft:Hack Nerd Font:pixelsize=18:antialias=true:hinting=true"
+  ]
+  
+  , bgColor = "#2E3440"
+  , fgColor = "#B3AFC2"
+  
+  , position = Top
+  , lowerOnStart = True
+  , hideOnStart = False
+  , allDesktops = True
+  , persistent = True
+
+  , commands = [
+    -- Time and date
+    -- Aliases to `%date%`.
+    Run Date "<fc=#D8DEE9>%d/%m/%Y</fc> - <fc=#E5E9F0>%H:%M</fc>" "date" 50
+    
+    -- Show current wireless informations if used.
+    -- Aliases to `%wi%`.
+    , Run Wireless "" ["--template", "<fc=#81A1C1><ssid></fc>"] 10 
+
+		-- Current network interface up and down.
+    -- Aliases to `%dynnetwork%`.
+    , Run DynNetwork [
+		    "--template" , " / net(<fc=#81A1C1><dev></fc>): <rx><fc=#D8DEE9>kB/s</fc> ; <tx><fc=#D8DEE9>kB/s</fc>"
+      , "--Low"      , "2000"       -- units: kB/s
+      , "--High"     , "20000"      -- units: kB/s
+      , "--low"      , "#8FBCBB"
+      , "--normal"   , "#81A1C1"
+      , "--high"     , "#BF616A"
+		] 10
                       
-		      -- Current network interface up and down.
-		      -- Aliases to "dynnetwork".
-                    , Run DynNetwork [
-		             "--template"   , "<dev>: down(<rx><fc=#D8DEE9>kB/s</fc>) up(<tx><fc=#D8DEE9>kB/s</fc>)"
-                             , "--Low"      , "2000"       -- units: kB/s
-                             , "--High"     , "20000"       -- units: kB/s
-                             , "--low"      , "#8FBCBB"
-                             , "--normal"   , "#81A1C1"
-                             , "--high"     , "#BF616A"
-			     ] 10
-                      
-                    , Run Cpu [
-		             "--template"   , "cpu: <total><fc=#D8DEE9>%</fc>"
-                             , "--Low"      , "50"         -- units: %
-                             , "--High"     , "85"         -- units: %
-                             , "--low"      , "#8FBCBB"
-                             , "--normal"   , "#81A1C1"
-                             , "--high"     , "#BF616A"
-                             ] 10
+    , Run Cpu [
+		   "--template"  , "<action=alacritty -e htop>cpu: <total><fc=#D8DEE9>%</fc></action>"
+      , "--Low"      , "50"         -- units: %
+      , "--High"     , "85"         -- units: %
+      , "--low"      , "#8FBCBB"
+      , "--normal"   , "#81A1C1"
+      , "--high"     , "#BF616A"
+    ] 10
 		      
-		      -- Ram used number and percent
-                    , Run Memory [
-		             "--template"   , "mem: <usedratio><fc=#D8DEE9>%</fc>"
-                             , "--Low"      , "25"        -- units: %
-                             , "--High"     , "80"        -- units: %
-                             , "--low"      , "#8FBCBB"
-                             , "--normal"   , "#81A1C1"
-                             , "--high"     , "#BF616A"
-			     ] 10
+		-- RAM used number and percent
+    , Run Memory [
+		   "--template"   , "<action=alacritty -e htop>mem: <usedratio><fc=#D8DEE9>%</fc></action>"
+      , "--Low"       , "25"        -- units: %
+      , "--High"      , "80"        -- units: %
+      , "--low"       , "#8FBCBB"
+      , "--normal"    , "#81A1C1"
+      , "--high"      , "#BF616A"
+		] 10
                      
-		     -- Disk space free
-                    , Run DiskU [("/", "ssd: <fc=#81A1C1><usedp></fc><fc=#D8DEE9>%</fc>")] [] 60
+		-- Show disk space usage in percentage. 
+    , Run DiskU [
+      ("/", "root: <fc=#81A1C1><usedp></fc><fc=#D8DEE9>%</fc>")
+    ] [] 60
 
-		      -- Prints out the left side items such as workspaces, layout, etc.
-                    , Run UnsafeStdinReader
-                    
-                    , Run Battery
-                       [ "--template" , "<acstatus><fc=#D8DEE9>%</fc>"
-                             , "--Low"      , "10"        -- units: %
-                             , "--High"     , "80"        -- units: %
+		-- Prints out the left side items such as workspaces, layout, etc.
+    -- `stdin` comes from XMobar.
+    , Run UnsafeStdinReader
+           
+    -- Show the battery percentage.
+    -- Aliases to `%battery%`
+    -- <https://github.com/jaor/xmobar/blob/master/doc/plugins.org#batteryp-dirs-args-refreshrate>
+    , Run Battery [
+       "--template"  , "<acstatus><fc=#D8DEE9>%</fc>"
+      , "-L"     , "15"        -- units: %
+      , "-H"     , "80"        -- units: %
                              
-			     , "--" -- battery specific options
-                                 -- Discharging status - use icons
+			, "--" -- Battery specific options
+        -- Discharging status - use icons                         
+				, "-o"         , ""
+        , "--lows"     , ": <fc=#BF616A><left></fc>"
+        , "--mediums"  , ": <fc=#81A1C1><left></fc>"
+        , "--highs"    , ": <fc=#8FBCBB><left></fc>"
                                  
-				 , "-o"           , ""
-                                 , "--lows"     , ": <fc=#BF616A><left></fc>"
-                                 , "--mediums"  , ": <fc=#81A1C1><left></fc>"
-                                 , "--highs"    , ": <fc=#8FBCBB><left></fc>"
+			  -- AC "on" status
+        , "-O"  , ": <fc=#8FBCBB><left></fc>"
                                  
-				 -- AC "on" status
-                                 , "-O"  , ": <fc=#8FBCBB><left></fc>"
+				-- Charged status
+        , "-i"  , ": <fc=#8FBCBB>100</fc>"
                                  
-				 -- Charged status
-                                 , "-i"  , ": <fc=#8FBCBB>100</fc>"
-                                 
-				 , "-a", "notify-send -u critical 'Battery running out !'"
-                                 , "-A", "20"
-                    ] 50
+				, "-a", "notify-send -u critical 'Battery running out !'"
+        , "-A", "20"
+    ] 50
 
-		    , Run Com "/home/vexcited/.config/xmobar/scripts/trayer-padding-icon.sh" [] "trayerpad" 10
-		    , Run Com "/home/vexcited/.config/xmobar/scripts/getlayout.sh" [] "keyboardlayout" 10
-		    ]
-       , sepChar = "%"
-       , alignSep = "}{"
-       , template = " %UnsafeStdinReader% }{ %cpu% <fc=#666666>|</fc> %memory% <fc=#666666>|</fc> %disku% <fc=#666666>|</fc> kbd: <fc=#8FBCBB>%keyboardlayout%</fc> <fc=#666666>|</fc> %dynnetwork% <fc=#666666>|</fc> audio: .. <fc=#666666>|</fc> %battery% <fc=#666666>|</fc> %date% <fc=#666666>|</fc> %trayerpad%"
-       }
+    , Run Alsa "default" "Master" [
+        "--template", "<action=alacritty -e alsamixer --view=playback>audio: <fc=#8FBCBB><status></fc></action>"
+      , "--"
+        , "-o", "MUTE"
+        , "-c", "#BF616A"
+        , "-O", "<volume><fc=#D8DEE9>%</fc>"
+        , "-C", "#81A1C1"
+    ]
+
+    , Run Alsa "default" "Capture" [
+        "--template", "<action=alacritty -e alsamixer --view=capture>mic: <fc=#8FBCBB><status></fc></action>"
+      , "--"
+        , "-o", "MUTE"
+        , "-c", "#BF616A"
+        , "-O", "<volume><fc=#D8DEE9>%</fc>"
+        , "-C", "#81A1C1"
+    ]
+
+    -- Show the current keyboard layout.
+    -- <https://github.com/jaor/xmobar/blob/master/doc/plugins.org#kbd-opts>.
+    , Run Kbd []
+
+		, Run Com "/home/vexcited/.config/xmobar/scripts/trayer-padding-icon.sh" [] "trayerpad" 10
+  ]
+
+  , sepChar = "%"
+  , alignSep = "}{"
+  
+  , template = " %UnsafeStdinReader% }{ %cpu% <fc=#666666>|</fc> %memory% <fc=#666666>|</fc> %disku% <fc=#666666>|</fc> <action=~/.xmonad/scripts/switchlayout.sh>kbd: <fc=#8FBCBB>%kbd%</fc></action> <fc=#666666>|</fc> wifi: %wi%%dynnetwork% <fc=#666666>|</fc> %alsa:default:Master% / %alsa:default:Capture% <fc=#666666>|</fc> %battery% <fc=#666666>|</fc> %date% <fc=#666666>|</fc> %trayerpad%"
+
+}
+
