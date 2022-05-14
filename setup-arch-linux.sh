@@ -69,6 +69,10 @@ packages_to_install=(
   
   # Fix special chars problems
   "noto-fonts" "noto-fonts-cjk" "noto-fonts-extra"
+
+  # Notifications
+  "libnotify"
+  "dunst"
 )
 
 for package in ${packages_to_install[@]}; do
@@ -213,10 +217,14 @@ nvim +"PlugInstall" +qall
 nvim +"CocInstall -sync coc-tsserver coc-json coc-eslint coc-html coc-css" +qall
 nvim +"CocUpdateSync" +qall
 
+echo "Enable notifications daemon..."
+dunstctl set-paused false
+
 clear
 echo "Done ! All the configuration was symlinked and installed."
 echo "Now, please reboot your computer with by running"
 echo -e "\tsudo reboot"
 echo ""
-echo "On login, the DE will automatically load."
+echo "On login, the ly display manger will automatically load."
+echo "Select 'xinitrc' as window manager to make sure it loads the config from '~/.xinitrc'."
 echo "More informations on https://github.com/vexcited/dotfiles"
