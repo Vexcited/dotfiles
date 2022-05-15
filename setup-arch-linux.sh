@@ -83,8 +83,18 @@ if ! command -v yay &> /dev/null; then
   cd .. && rm -rf yay-git
 fi
 
-echo "Installing Hack Nerd Font..."
-yay -S nerd-fonts-hack
+install_aur () {
+  package=$1
+
+  if yay -Qi $package &> /dev/null ; then
+    echo -e "\t$package is installed. Skipping."
+  else
+    echo -e "\t$package is not installed. Installing..."
+    yay -S $package
+  fi
+}
+
+install_aur nerd-fonts-hack
 
 if [ ! -d $HOME/.oh-my-zsh ]; then
   echo "Installing oh-my-zsh..."
@@ -102,28 +112,17 @@ if [ ! -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]; then
   git clone https://github.com/zsh-users/zsh-autosuggestions.git $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 fi
 
-if ! command -v nvm &> /dev/null; then
-  echo "Installing NVM..."
-  yay -S nvm
-fi
+install_aur nvm
 
-if ! command -v code &> /dev/null; then
-  echo "Installing Visual Studio Code..."
-  yay -S visual-studio-code-bin
+install_aur visual-studio-code-bin
+echo "Installing VS Code extensions..."
+code --install-extension "icrawl.discord-vscode"
+code --install-extension "marlosirapuan.nord-deep"
+code --install-extension "dbaeumer.vscode-eslint"
 
-  echo "Installing VS Code extensions..."
-  code --install-extension "icrawl.discord-vscode"
-  code --install-extension "marlosirapuan.nord-deep"
-  code --install-extension "dbaeumer.vscode-eslint"
-fi
-
-if ! command -v ly &> /dev/null; then
-  echo "Installing ly (display manager to login)..."
-  yay -S ly
-
-  echo "Enabling ly service..."
-  sudo systemctl enable ly.service
-fi
+install_aur ly
+echo "Enabling ly service..."
+sudo systemctl enable ly.service
 
 echo "Symlinking dotfiles..."
 mkdir -p $HOME/.config
@@ -181,7 +180,7 @@ create_symlink $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
 echo -e "\tSyncing xmonad and its scripts..."
 mkdir -p $HOME/.config/xmonad
 create_symlink $DOTFILES/xmonad $HOME/.config/xmonad
-if [ ! -d $HOME/.local/bin/xmonad ]; then
+if [ ! -f $HOME/.local/bin/xmonad ]; then
   echo -e "\tInstalling xmonad with stack..."
   cd $HOME/.config/xmonad && stack install && cd $HOME/.vexcited-dotfiles
 fi
@@ -223,9 +222,11 @@ source /usr/share/nvm/init-nvm.sh
 nvm install --lts
 nvm use --lts
 
-echo "Installing Vim-Plug..."
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+vim_plug_install_path="${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim
+if [ ! -f $vim_plug_install_path ]; then
+  echo "Installing Vim-Plug..."
+  sh -c "curl -fLo $vim_plug_install_path --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+fi
 
 echo -e "\tSyncing nvim..."
 mkdir -p $HOME/.config/nvim
