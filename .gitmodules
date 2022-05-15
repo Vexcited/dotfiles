@@ -4,3 +4,9 @@
 [submodule "arch-linux/xmonad/xmonad-contrib"]
 	path = arch-linux/xmonad/xmonad-contrib
 	url = https://github.com/xmonad/xmonad-contrib
+[submodule "arch-linux/gtk/themes/Nordic"]
+	path = arch-linux/gtk/themes/Nordic
+	url = https://github.com/EliverLara/Nordic
+[submodule "arch-linux/gtk/icons/Papirus-Nord"]
+	path = arch-linux/gtk/icons/Papirus-Nord
+	url = https://github.com/Adapta-Projects/Papirus-Nord

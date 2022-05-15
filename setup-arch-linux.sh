@@ -60,12 +60,14 @@ packages_to_install=(
   "libgnome-keyring"
 
   "flameshot"
+  "nautilus"
   "rofi"
 
   "pulseaudio" "pulseaudio-alsa" "pulseaudio-bluetooth"
   "pulsemixer" "pavucontrol"
   
   "noto-fonts-emoji" "noto-fonts" "noto-fonts-cjk" "noto-fonts-extra"
+  "papirus-icon-theme"
 
   "libnotify"
   "dunst"
@@ -216,6 +218,19 @@ create_symlink $DOTFILES/flameshot/flameshot.ini $HOME/.config/flameshot/flamesh
 echo -e "\tSyncing dunst..."
 mkdir -p $HOME/.config/dunst
 create_symlink $DOTFILES/dunst/dunstrc $HOME/.config/dunst/dunstrc
+
+# GTK
+echo -e "\tSyncing gtk..."
+touch $HOME/.gtk-bookmarks # Fix errors about bookmarks in Nautilus.
+create_symlink $DOTFILES/gtk/config/gtkrc-2.0 $HOME/.gtkrc-2.0
+mkdir -p $HOME/.config/gtk-3.0
+create_symlink $DOTFILES/gtk/config/gtk-3.0/settings.ini $HOME/.config/gtk-3.0/settings.ini
+mkdir -p $HOME/.themes
+create_symlink $DOTFILES/gtk/themes/Nordic $HOME/.themes/Nordic
+gsettings set org.gnome.desktop.interface gtk-theme "Nordic"
+gsettings set org.gnome.desktop.wm.preferences theme "Nordic"
+cd $DOTFILES/gtk/icons/Papirus-Nord && chmod +x ./install && yes N | sudo ./install && cd $HOME/.vexcited-dotfiles
+papirus-folders -C frostblue3 --theme Papirus-Dark
 
 echo "Add Node LTS to NVM..."
 source /usr/share/nvm/init-nvm.sh
