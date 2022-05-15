@@ -211,7 +211,7 @@ myWallpaperPath = "~/.vexcited-dotfiles/wallpapers/wallpaper-2.png"
 
 myStartupHook = do
   setWMName "LG3D"
-  spawnOnce $ "feh --bg-fill " ++ myWallpaperPath ++ " &"
+  spawnOnce $ "feh --no-fehbg --bg-fill " ++ myWallpaperPath ++ " &"
   spawnOnce "picom --experimental-backend -b &"
   spawnOnce "~/.xmonad/scripts/trayer.sh &"
 

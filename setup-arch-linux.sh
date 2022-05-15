@@ -29,7 +29,9 @@ sudo pacman -Syu
 
 packages_to_install=(
   "github-cli"
+  "alsa-utils"
   "xdg-utils"
+  
   "neovim"
   "alacritty"
   
@@ -41,40 +43,29 @@ packages_to_install=(
   "wget"
   "pkgconf"
 
-  # Window Manager
-  "xmonad"
-  "xmonad-contrib"
+  "xorg-server" "xorg-apps" "xorg-xinit" "xorg-xmessage"
+  "libx11" "libxft" "libxinerama" "libxrandr" "libxss"
+  "stack"
   "xmobar"
-
+  
   "picom"
-
-  # Wallpaper
   "feh"
 
-  # Launcher
-  "rofi"
-
   "xdotool" 
-  "git"
-  "zsh"
-  "alsa-utils"
   "libinput"
 
   "gnome-keyring"
   "libsecret"
   "libgnome-keyring"
 
-  # Screenshot
   "flameshot"
+  "rofi"
 
-  # PulseAudio
   "pulseaudio" "pulseaudio-alsa" "pulseaudio-bluetooth"
   "pulsemixer" "pavucontrol"
   
-  # Fix special chars and emojis problems
   "noto-fonts-emoji" "noto-fonts" "noto-fonts-cjk" "noto-fonts-extra"
 
-  # Notifications
   "libnotify"
   "dunst"
 )
@@ -185,11 +176,10 @@ create_symlink $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
 
 # Xmonad
 echo -e "\tSyncing xmonad and its scripts..."
-mkdir -p $HOME/.xmonad
-create_symlink $DOTFILES/xmonad/xmonad.hs $HOME/.xmonad/xmonad.hs
-create_symlink $DOTFILES/xmonad/scripts $HOME/.xmonad/scripts
-chmod +x $HOME/.xmonad/scripts/switchlayout.sh
-chmod +x $HOME/.xmonad/scripts/trayer.sh
+mkdir -p $HOME/.config/xmonad
+create_symlink $DOTFILES/xmonad $HOME/.config/xmonad
+chmod +x $HOME/.config/xmonad/scripts/switchlayout.sh
+chmod +x $HOME/.config/xmonad/scripts/trayer.sh
 
 # Rofi
 echo -e "\tSyncing rofi..."
@@ -210,6 +200,11 @@ create_symlink $DOTFILES/xmobar/scripts $HOME/.config/xmobar/scripts
 chmod +x $HOME/.config/xmobar/scripts/getlayout.sh
 chmod +x $HOME/.config/xmobar/scripts/trayer-padding-icon.sh
 chmod +x $HOME/.config/xmobar/scripts/getvolume.sh
+
+# Flameshot
+echo -e "\tSyncing flameshot..."
+mkdir -p $HOME/.config/flameshot
+create_symlink $DOTFILES/flameshot/flameshot.ini $HOME/.config/flameshot/flameshot.ini
 
 # Dunst
 echo -e "\tSyncing dunst..."
@@ -240,6 +235,6 @@ echo "Done ! All the configuration was symlinked and installed."
 echo "Now, please reboot your computer with by running"
 echo -e "\tsudo reboot"
 echo ""
-echo "On login, the ly display manger will automatically load."
+echo "On startup, the ly display manger will automatically load to prompt login."
 echo "Select 'xinitrc' as window manager to make sure it loads the config from '~/.xinitrc'."
 echo "More informations on https://github.com/vexcited/dotfiles"

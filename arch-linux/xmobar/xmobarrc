@@ -102,7 +102,7 @@ Config {
     \%battery%\
     \ <fc=#6b7a94>/</fc> \
     \%date%\
-    \ <fc=#6b7a94>/</fc> \
+    \ <fc=#6b7a94>/</fc>\
     \%trayerpad%\
   \"
 }
