@@ -39,6 +39,8 @@ packages_to_install=(
   "zsh-syntax-highlighting"
   "zsh-autosuggestions"
 
+  "zip"
+  "unzip"
   "curl"
   "wget"
   "pkgconf"
@@ -178,8 +180,8 @@ create_symlink $DOTFILES/zsh/zshrc $HOME/.zshrc
 create_symlink $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
 
 # Xmonad
-echo -e "\tSyncing xmonad and its scripts..."
-mkdir -p $HOME/.config/xmonad
+echo -e "\tSyncing xmonad and its scripts ($HOME/.config/xmonad will be removed)..."
+rm -rf $HOME/.config/xmonad
 create_symlink $DOTFILES/xmonad $HOME/.config/xmonad
 if [ ! -f $HOME/.local/bin/xmonad ]; then
   echo -e "\tInstalling xmonad with stack..."
@@ -205,9 +207,7 @@ echo -e "\tSyncing xmobar..."
 mkdir -p $HOME/.config/xmobar
 create_symlink $DOTFILES/xmobar/xmobarrc $HOME/.config/xmobar/xmobarrc
 create_symlink $DOTFILES/xmobar/scripts $HOME/.config/xmobar/scripts
-chmod +x $HOME/.config/xmobar/scripts/getlayout.sh
 chmod +x $HOME/.config/xmobar/scripts/trayer-padding-icon.sh
-chmod +x $HOME/.config/xmobar/scripts/getvolume.sh
 
 # Flameshot
 echo -e "\tSyncing flameshot..."
