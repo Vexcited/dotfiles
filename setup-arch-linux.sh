@@ -67,7 +67,9 @@ packages_to_install=(
 
   "pulseaudio" "pulseaudio-alsa" "pulseaudio-bluetooth"
   "pulsemixer" "pavucontrol"
-  
+
+  "bluez" "bluez-utils"
+
   "noto-fonts-emoji" "noto-fonts" "noto-fonts-cjk" "noto-fonts-extra"
   "papirus-icon-theme"
 
@@ -252,6 +254,9 @@ nvim +"CocUpdateSync" +qall
 
 echo "Enable notifications daemon..."
 dunstctl set-paused false
+
+echo "Enable bluetooth service..."
+sudo systemctl enable bluetooth.service
 
 clear
 echo "Done ! All the configuration was symlinked and installed."
