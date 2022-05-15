@@ -38,4 +38,4 @@ mkdir -p "$HOME"/.local/share/keyrings
 xsetroot -cursor_name left_ptr
 setxkbmap -layout us -variant intl
 
-exec xmonad
+exec $HOME/.local/bin/xmonad

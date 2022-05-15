@@ -178,6 +178,10 @@ create_symlink $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
 echo -e "\tSyncing xmonad and its scripts..."
 mkdir -p $HOME/.config/xmonad
 create_symlink $DOTFILES/xmonad $HOME/.config/xmonad
+if [ ! -d $HOME/.local/bin/xmonad ]; then
+  echo -e "\tInstalling xmonad with stack..."
+  cd $HOME/.config/xmonad && stack install && cd $HOME/.vexcited-dotfiles
+fi
 chmod +x $HOME/.config/xmonad/scripts/switchlayout.sh
 chmod +x $HOME/.config/xmonad/scripts/trayer.sh
 

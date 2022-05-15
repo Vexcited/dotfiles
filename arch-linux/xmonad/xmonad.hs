@@ -69,7 +69,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((mod1Mask,           xK_Tab   ), spawn "rofi -show window") 
 
     -- mod-shift-l                    Switch keyboard layout between us(intl) and fr
-    , ((modm .|. shiftMask, xK_l     ), spawn "~/.xmonad/scripts/switchlayout.sh")
+    , ((modm .|. shiftMask, xK_l     ), spawn "~/.config/xmonad/scripts/switchlayout.sh")
 
     -- mod-shift-c                    Close focused window.
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -117,7 +117,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
 
     -- mod-shift-slash                Open help text in alacritty (less)
-    , ((modm .|. shiftMask, xK_slash ), spawn "alacritty -e less ~/.xmonad/help.txt")
+    , ((modm .|. shiftMask, xK_slash ), spawn "alacritty -e less ~/.config/xmonad/help.txt")
 
     -- mod-shift-s                    Take a screenshot (flameshot)
     , ((modm .|. shiftMask, xK_s     ), spawn "flameshot gui")
@@ -213,7 +213,7 @@ myStartupHook = do
   setWMName "LG3D"
   spawnOnce $ "feh --no-fehbg --bg-fill " ++ myWallpaperPath ++ " &"
   spawnOnce "picom --experimental-backend -b &"
-  spawnOnce "~/.xmonad/scripts/trayer.sh &"
+  spawnOnce "~/.config/xmonad/scripts/trayer.sh &"
 
 ------------------------------------------------------------------------
 
