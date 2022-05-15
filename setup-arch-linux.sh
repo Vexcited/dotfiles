@@ -175,7 +175,6 @@ create_symlink $DOTFILES/bash/bash_profile $HOME/.bash_profile
 # ZSH
 echo -e "\tSyncing zsh..."
 create_symlink $DOTFILES/zsh/zshrc $HOME/.zshrc
-create_symlink $DOTFILES/zsh/zprofile $HOME/.zprofile
 create_symlink $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
 
 # Xmonad
@@ -185,6 +184,7 @@ create_symlink $DOTFILES/xmonad $HOME/.config/xmonad
 if [ ! -f $HOME/.local/bin/xmonad ]; then
   echo -e "\tInstalling xmonad with stack..."
   cd $HOME/.config/xmonad && stack install && cd $HOME/.vexcited-dotfiles
+  sudo ln -sf $HOME/.local/bin/xmonad /usr/bin
 fi
 chmod +x $HOME/.config/xmonad/scripts/switchlayout.sh
 chmod +x $HOME/.config/xmonad/scripts/trayer.sh

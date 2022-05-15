@@ -93,7 +93,7 @@ Config {
       \<fc=#566276>%kbd%</fc>\
     \</action>\
     \ <fc=#6b7a94>/</fc> \
-    \wifi: %wi%%dynnetwork%\
+    \<action=alacritty -e nmcli>wifi: %wi%%dynnetwork%</action>\
     \ <fc=#6b7a94>/</fc> \
     \%alsa:default:Master%\
     \ <fc=#6b7a94>/</fc> \
