@@ -16,7 +16,7 @@ echo "Installing pacman packages... (it will maybe ask you a password)"
 install_package () {
   package=$1
 
-  if pacman -Qi $package > /dev/null ; then
+  if pacman -Qi $package &> /dev/null ; then
     echo -e "\t$package is installed. Skipping."
   else
     echo -e "\t$package is not installed. Installing..."
@@ -48,6 +48,7 @@ packages_to_install=(
   "stack"
   "xmobar"
   
+  "trayer"
   "picom"
   "feh"
 
@@ -85,9 +86,6 @@ fi
 echo "Installing Hack Nerd Font..."
 yay -S nerd-fonts-hack
 
-echo "Installing trayer-srg..."
-yay -S trayer-srg
-
 if [ ! -d $HOME/.oh-my-zsh ]; then
   echo "Installing oh-my-zsh..."
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -112,6 +110,11 @@ fi
 if ! command -v code &> /dev/null; then
   echo "Installing Visual Studio Code..."
   yay -S visual-studio-code-bin
+
+  echo "Installing VS Code extensions..."
+  code --install-extension "icrawl.discord-vscode"
+  code --install-extension "marlosirapuan.nord-deep"
+  code --install-extension "dbaeumer.vscode-eslint"
 fi
 
 if ! command -v ly &> /dev/null; then
