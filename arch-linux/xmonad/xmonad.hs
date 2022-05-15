@@ -220,7 +220,7 @@ myStartupHook = do
 main :: IO ()
 main = do
   xmproc <- spawnPipe "xmobar -x 0 ~/.config/xmobar/xmobarrc"
-  xmonad $ ewmh $ docks $ defaults xmproc
+  xmonad $ ewmhFullscreen . ewmh $ docks $ defaults xmproc
 
 defaults xmproc = def {
   terminal           = myTerminal,
