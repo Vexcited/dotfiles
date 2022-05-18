@@ -54,9 +54,6 @@ Config {
       , "--highs"    , " <fc=#81A1C1><left></fc>"
       , "--mediums"  , " <fc=#8FBCBB><left></fc>"
       , "--lows"     , " <fc=#BF616A><left></fc>"
-                                 
-      , "-a", "notify-send -u critical 'Battery running out !'"
-      , "-A", "20"
     ] 10
 
     , Run Alsa "default" "Master" [

@@ -12,6 +12,9 @@ filetype plugin indent on
 " Use nord.nvim colorscheme.
 colorscheme nord
 
+" Enable selection with the mouse.
+set mouse=a
+
 " On pressing tab, insert 2 spaces.
 set expandtab
 
