@@ -27,8 +27,8 @@ function _Download_GitHubDesktopApp {
 }
 
 function _Download_YouTubeMusicDesktopApp {
-  $repo = "ytmdesktop/ytmdesktop"
-  Write-Host "+ Download 'ytmdesktop' from '$repo' repository."
+  $repo = "th-ch/youtube-music"
+  Write-Host "+ Download 'youtube-music' from '$repo' repository."
   
   $releases_url = "https://api.github.com/repos/$repo/releases/latest"
   Write-Host "`t* Determine latest release."
@@ -38,11 +38,12 @@ function _Download_YouTubeMusicDesktopApp {
   Foreach ($asset in $assets) { 
     $download_url = $asset.browser_download_url
 
-    if ($download_url.Contains(".exe") -and -not $download_url.Contains(".blockmap")) {
-      __DownloadAndInstall -FileName "youtube_music_desktop.exe" -DownloadUrl $download_url
+    if ($download_url.Contains(".exe") -and $download_url.Contains("Setup") -and -not $download_url.Contains(".blockmap")) {
+      __DownloadAndInstall -FileName "youtube_music.exe" -DownloadUrl $download_url
     }
   }
 }
+
 function Dowload_Softwares {
   Write-Host "`n---- END`n[SOFTWARES] Download.`n`n"
   
