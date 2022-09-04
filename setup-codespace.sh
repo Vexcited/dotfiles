@@ -393,7 +393,7 @@ sudo chmod +x /usr/local/share/desktop-init.sh /usr/local/bin/set-resolution
 copy_fluxbox_config "/root"
 if [ "${USERNAME}" != "root" ]; then
     copy_fluxbox_config "/home/${USERNAME}"
-    chown -R ${USERNAME} /home/${USERNAME}/.Xmodmap /home/${USERNAME}/.fluxbox
+    sudo chown -R ${USERNAME} /home/${USERNAME}/.Xmodmap /home/${USERNAME}/.fluxbox
 fi
 
 # Install Neovim v0.8.0 from GitHub releases.
