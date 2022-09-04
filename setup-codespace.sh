@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 #
-# Docs: https://github.com/microsoft/vscode-dev-containers/blob/main/script-library/docs/desktop-lite.md
-# Credits to Microsoft, the VS Code and Codespaces Teams.
-# Taken from https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/repository-containers/images/github.com/microsoft/vscode/.devcontainer/library-scripts/desktop-lite-debian.sh
+# Some parts of this code were taken from:
+# - https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/repository-containers/images/github.com/microsoft/vscode/.devcontainer/library-scripts/desktop-lite-debian.sh
+
+# Check if 'WAKATIME_API_KEY' environment variable is given
+# to automatically configure it for us.
+if [[ -z "$WAKATIME_API_KEY" ]]; then
+  echo -e "[settings]\napi_key = $WAKATIME_API_KEY" > ~/.wakatime.cfg
+fi # We do this first to prevent extensions from asking it.
 
 USERNAME="automatic"
 VNC_PASSWORD="vnc"
-INSTALL_NOVNC="true"
 VNC_PORT="5901"
 NOVNC_PORT="6080"
 
@@ -74,26 +78,23 @@ aptSudoIf()
     sudoIf apt-get "$1"
 }
 
+# Exit immediately if a command exits with a non-zero status.
 set -e
 
-# Determine the appropriate non-root user
-if [ "${USERNAME}" = "auto" ] || [ "${USERNAME}" = "automatic" ]; then
-    USERNAME=""
-    POSSIBLE_USERS=("vscode" "node" "codespace" "$(awk -v val=1000 -F ":" '$3==val{print $1}' /etc/passwd)")
-    for CURRENT_USER in ${POSSIBLE_USERS[@]}; do
-        if id -u ${CURRENT_USER} > /dev/null 2>&1; then
-            USERNAME=${CURRENT_USER}
-            break
-        fi
-    done
-    if [ "${USERNAME}" = "" ]; then
-        USERNAME=root
-    fi
-elif [ "${USERNAME}" = "none" ] || ! id -u ${USERNAME} > /dev/null 2>&1; then
-    USERNAME=root
+# Determine the appropriate non-root user.
+USERNAME=""
+POSSIBLE_USERS=("vscode" "node" "codespace" "$(awk -v val=1000 -F ":" '$3==val{print $1}' /etc/passwd)")
+for CURRENT_USER in ${POSSIBLE_USERS[@]}; do
+  if id -u ${CURRENT_USER} > /dev/null 2>&1; then
+    USERNAME=${CURRENT_USER}
+    break
+  fi
+done
+if [ "${USERNAME}" = "" ]; then
+  USERNAME=root
 fi
 
-# Add default Fluxbox config files if none are already present
+# Add default Fluxbox config files if none are already present.
 fluxbox_apps="$(cat \
 << 'EOF'
 [transient] (role=GtkFileChooserDialog)
@@ -202,15 +203,15 @@ else
     package_list="${package_list} tilix"
 fi
 
-# Install X11, fluxbox and VS Code dependencies
+# Install X11, fluxbox, VSCodium, Chromium, ... dependencies.
 check_packages ${package_list}
 
-# Install Emoji font if available in distro - Available in Debian 10+, Ubuntu 18.04+
+# Install Emoji font if available in distro.
 if dpkg-query -W fonts-noto-color-emoji > /dev/null 2>&1 && ! dpkg -s fonts-noto-color-emoji > /dev/null 2>&1; then
     sudo apt-get -y install --no-install-recommends fonts-noto-color-emoji
 fi
 
-# Check at least one locale exists
+# Check at least one locale exists.
 if ! grep -o -E '^\s*en_US.UTF-8\s+UTF-8' /etc/locale.gen > /dev/null; then
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
     sudo locale-gen
@@ -247,10 +248,10 @@ if [ "${INSTALL_NOVNC}" = "true" ] && [ ! -d "/usr/local/novnc" ]; then
     sudo sed -i -E 's/^python /python3 /' /usr/local/novnc/websockify-${WEBSOCKETIFY_VERSION}/run
 fi
 
-# Set up folders for scripts and init files
+# Set up folders for scripts and init files.
 sudo mkdir -p /var/run/dbus /usr/local/etc/vscode-dev-containers/
 
-# Script to change resolution of desktop
+# Script to change resolution of desktop.
 sudo bash -c 'cat > /usr/local/bin/set-resolution' << EOF
 #!/bin/bash
 RESOLUTION=\${1:-\${VNC_RESOLUTION:-1920x1080}}
@@ -402,29 +403,31 @@ wget https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.deb
 sudo dpkg -i /tmp/nvim.deb
 rm -f /tmp/nvim.deb
 
+# Add GPG of VSCodium.
 wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
   | gpg --dearmor \
-  | sudoIf dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
+  | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
 
+# Add source for VSCodium.
 echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://download.vscodium.com/debs vscodium main' \
-  | sudoIf tee /etc/apt/sources.list.d/vscodium.list
+  | sudo tee /etc/apt/sources.list.d/vscodium.list
 
-aptSudoIf update && aptSudoIf install codium
-
-if [[ -z "$WAKATIME_API_KEY" ]]; then
-  echo -e "[settings]\napi_key = $WAKATIME_API_KEY" > ~/.wakatime.cfg
-fi
+# Install VSCodium.
+sudo apt-get update && sudo apt-get install codium -y
 
 cat << EOF
 
+Dotfiles are now installed!
 
-You now have a working desktop! Connect to in one of the following ways:
+To start the desktop with a VNC session, run "/usr/local/share/desktop-init.sh".
+Connect to in one of the following ways:
 
 - Forward port ${NOVNC_PORT} and use a web browser start the noVNC client (recommended)
-- Forward port ${VNC_PORT} using VS Code client and connect using a VNC Viewer
+- Forward port ${VNC_PORT} using VS Code client or GitHub CLI with "gh codespace ports forward ${VNC_PORT}:${VNC_PORT}" and connect using a VNC Viewer on "localhost:${VNC_PORT}"
 
-In both cases, use the password "${VNC_PASSWORD}" when connecting
+In both cases, use the password "${VNC_PASSWORD}" when connecting.
 
-(*) Done!
+Happy coding!
+- Vexcited
 
 EOF
