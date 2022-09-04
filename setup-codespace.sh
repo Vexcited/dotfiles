@@ -213,7 +213,7 @@ fi
 # Check at least one locale exists
 if ! grep -o -E '^\s*en_US.UTF-8\s+UTF-8' /etc/locale.gen > /dev/null; then
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-    sudoIf locale-gen
+    sudo locale-gen
 fi
 
 # Install the Cascadia Code fonts - https://github.com/microsoft/cascadia-code
@@ -222,8 +222,8 @@ if [ ! -d "/usr/share/fonts/truetype/cascadia" ]; then
 
     curl -sSL https://github.com/microsoft/cascadia-code/releases/download/v2008.25/CascadiaCode-2008.25.zip -o /tmp/cascadia-fonts.zip
     unzip /tmp/cascadia-fonts.zip -d /tmp/cascadia-fonts
-    mkdir -p /usr/share/fonts/truetype/cascadia
-    sudoIf mv /tmp/cascadia-fonts/ttf/* /usr/share/fonts/truetype/cascadia/
+    sudo mkdir -p /usr/share/fonts/truetype/cascadia
+    sudo mv /tmp/cascadia-fonts/ttf/* /usr/share/fonts/truetype/cascadia/
     rm -rf /tmp/cascadia-fonts.zip /tmp/cascadia-fonts
 fi
 
@@ -233,18 +233,18 @@ if [ "${INSTALL_NOVNC}" = "true" ] && [ ! -d "/usr/local/novnc" ]; then
 
     mkdir -p /usr/local/novnc
     curl -sSL https://github.com/novnc/noVNC/archive/v${NOVNC_VERSION}.zip -o /tmp/novnc-install.zip
-    unzip /tmp/novnc-install.zip -d /usr/local/novnc
-    sudoIf cp /usr/local/novnc/noVNC-${NOVNC_VERSION}/vnc.html /usr/local/novnc/noVNC-${NOVNC_VERSION}/index.html
+    sudo unzip /tmp/novnc-install.zip -d /usr/local/novnc
+    sudo cp /usr/local/novnc/noVNC-${NOVNC_VERSION}/vnc.html /usr/local/novnc/noVNC-${NOVNC_VERSION}/index.html
     curl -sSL https://github.com/novnc/websockify/archive/v${WEBSOCKETIFY_VERSION}.zip -o /tmp/websockify-install.zip
-    sudoIf unzip /tmp/websockify-install.zip -d /usr/local/novnc
-    sudoIf ln -s /usr/local/novnc/websockify-${WEBSOCKETIFY_VERSION} /usr/local/novnc/noVNC-${NOVNC_VERSION}/utils/websockify
+    sudo unzip /tmp/websockify-install.zip -d /usr/local/novnc
+    sudo ln -s /usr/local/novnc/websockify-${WEBSOCKETIFY_VERSION} /usr/local/novnc/noVNC-${NOVNC_VERSION}/utils/websockify
     rm -f /tmp/websockify-install.zip /tmp/novnc-install.zip
 
     # Install noVNC dependencies and use them.
     if ! dpkg -s python3-minimal python3-numpy > /dev/null 2>&1; then
         sudo apt-get -y install --no-install-recommends python3-minimal python3-numpy
     fi
-    sudoIf sed -i -E 's/^python /python3 /' /usr/local/novnc/websockify-${WEBSOCKETIFY_VERSION}/run
+    sudo sed -i -E 's/^python /python3 /' /usr/local/novnc/websockify-${WEBSOCKETIFY_VERSION}/run
 fi
 
 # Set up folders for scripts and init files
