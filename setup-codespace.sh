@@ -231,7 +231,7 @@ fi
 if [ "${INSTALL_NOVNC}" = "true" ] && [ ! -d "/usr/local/novnc" ]; then
     echo "installing novnc..."
 
-    mkdir -p /usr/local/novnc
+    sudo mkdir -p /usr/local/novnc
     curl -sSL https://github.com/novnc/noVNC/archive/v${NOVNC_VERSION}.zip -o /tmp/novnc-install.zip
     sudo unzip /tmp/novnc-install.zip -d /usr/local/novnc
     sudo cp /usr/local/novnc/noVNC-${NOVNC_VERSION}/vnc.html /usr/local/novnc/noVNC-${NOVNC_VERSION}/index.html
@@ -400,6 +400,7 @@ fi
 aptSudoIf remove neovim* # Remove every older installations of Neovim.
 wget https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.deb -O /tmp/nvim.deb
 sudo dpkg -i /tmp/nvim.deb
+rm -f /tmp/nvim.deb
 
 wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
   | gpg --dearmor \
