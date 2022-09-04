@@ -188,7 +188,7 @@ if [[ -z $(apt-cache --names-only search ^tilix$) ]]; then
     . /etc/os-release
     if [ "${ID}" = "ubuntu" ]; then
         aptSudoIf install -y --no-install-recommends apt-transport-https software-properties-common
-        aptSudoIf add-apt-repository -y ppa:webupd8team/terminix
+        sudo add-apt-repository -y ppa:webupd8team/terminix
     elif [ "${VERSION_CODENAME}" = "stretch" ]; then
 	echo "deb http://deb.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/stretch-backports.list
     fi
