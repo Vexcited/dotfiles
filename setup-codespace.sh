@@ -164,7 +164,7 @@ apt_get_update_if_needed()
 {
     if [ ! -d "/var/lib/apt/lists" ] || [ "$(ls /var/lib/apt/lists/ | wc -l)" = "0" ]; then
         echo "Running apt-get update..."
-        aptSudoIf update
+        sudo apt-get update
     else
         echo "Skipping apt-get update."
     fi
@@ -174,7 +174,7 @@ apt_get_update_if_needed()
 check_packages() {
     if ! dpkg -s "$@" > /dev/null 2>&1; then
         apt_get_update_if_needed
-        aptSudoIf -y install --no-install-recommends "$@"
+        sudo apt-get -y install --no-install-recommends "$@"
     fi
 }
 
@@ -187,7 +187,7 @@ apt_get_update_if_needed
 if [[ -z $(apt-cache --names-only search ^tilix$) ]]; then
     . /etc/os-release
     if [ "${ID}" = "ubuntu" ]; then
-        aptSudoIf install -y --no-install-recommends apt-transport-https software-properties-common
+        sudo apt-get install -y --no-install-recommends apt-transport-https software-properties-common
         sudo add-apt-repository -y ppa:webupd8team/terminix
     elif [ "${VERSION_CODENAME}" = "stretch" ]; then
 	echo "deb http://deb.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/stretch-backports.list
@@ -207,12 +207,12 @@ check_packages ${package_list}
 
 # Install Emoji font if available in distro - Available in Debian 10+, Ubuntu 18.04+
 if dpkg-query -W fonts-noto-color-emoji > /dev/null 2>&1 && ! dpkg -s fonts-noto-color-emoji > /dev/null 2>&1; then
-    aptSudoIf -y install --no-install-recommends fonts-noto-color-emoji
+    sudo apt-get -y install --no-install-recommends fonts-noto-color-emoji
 fi
 
 # Check at least one locale exists
 if ! grep -o -E '^\s*en_US.UTF-8\s+UTF-8' /etc/locale.gen > /dev/null; then
-    sudoIf echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
     sudoIf locale-gen
 fi
 
@@ -242,7 +242,7 @@ if [ "${INSTALL_NOVNC}" = "true" ] && [ ! -d "/usr/local/novnc" ]; then
 
     # Install noVNC dependencies and use them.
     if ! dpkg -s python3-minimal python3-numpy > /dev/null 2>&1; then
-        aptSudoIf -y install --no-install-recommends python3-minimal python3-numpy
+        sudo apt-get -y install --no-install-recommends python3-minimal python3-numpy
     fi
     sudoIf sed -i -E 's/^python /python3 /' /usr/local/novnc/websockify-${WEBSOCKETIFY_VERSION}/run
 fi
