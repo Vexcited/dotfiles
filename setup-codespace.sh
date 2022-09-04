@@ -49,16 +49,32 @@ package_list="
     ca-certificates\
     unzip \
     nano \
-    firefox-esr \
-    neovim \
+    chromium \
     locales"
 
-set -e
+# Wrapper function to only use sudo if not already root
+sudoIf()
+{
+    if [ "$(id -u)" -ne 0 ]; then
+        sudo $1 $2
+    else
+        $1 $2
+    fi
+}
 
-if [ "$(id -u)" -ne 0 ]; then
-    echo -e 'Script must be run as root. Use sudo, su, or add "USER root" to your Dockerfile before running this script.'
-    exit 1
-fi
+# Utility function that waits for any existing installation operations to complete
+# on Debian/Ubuntu based distributions and then calls apt-get
+aptSudoIf() 
+{
+    while sudoIf fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
+        echo -ne "(*) Waiting for other package operations to complete.\r"
+        sleep 1
+        echo -ne "\r\033[K"
+    done
+    sudoIf apt-get "$1"
+}
+
+set -e
 
 # Determine the appropriate non-root user
 if [ "${USERNAME}" = "auto" ] || [ "${USERNAME}" = "automatic" ]; then
@@ -106,7 +122,7 @@ fluxbox_menu="$(cat \
 << 'EOF'
 [begin] (  Application Menu  )
     [exec] (File Manager) { nautilus ~ } <>
-    [exec] (Text Editor) { mousepad } <>
+    [exec] (Text Editor) { codium } <>
     [exec] (Terminal) { tilix -w ~ -e $(readlink -f /proc/$$/exe) -il } <>
     [exec] (Web Browser) { x-www-browser --disable-dev-shm-usage } <>
     [submenu] (System) {}
@@ -129,16 +145,16 @@ EOF
 # Copy config files if they don't already exist
 copy_fluxbox_config() {
     local target_dir="$1"
-    mkdir -p "${target_dir}/.fluxbox"
-    touch "${target_dir}/.Xmodmap"
+    sudo mkdir -p "${target_dir}/.fluxbox"
+    sudo touch "${target_dir}/.Xmodmap"
     if [ ! -e "${target_dir}/.fluxbox/apps" ]; then
-        echo "${fluxbox_apps}" > "${target_dir}/.fluxbox/apps"
+        sudo bash -c "echo '${fluxbox_apps}' > '${target_dir}/.fluxbox/apps'"
     fi
     if [ ! -e "${target_dir}/.fluxbox/init" ]; then
-        echo "${fluxbox_init}" > "${target_dir}/.fluxbox/init"
+        sudo bash -c "echo '${fluxbox_init}' > '${target_dir}/.fluxbox/init'"
     fi
     if [ ! -e "${target_dir}/.fluxbox/menu" ]; then
-        echo "${fluxbox_menu}" > "${target_dir}/.fluxbox/menu"
+        sudo bash -c "echo '${fluxbox_menu}' > '${target_dir}/.fluxbox/menu'"
     fi
 }
 
@@ -148,7 +164,7 @@ apt_get_update_if_needed()
 {
     if [ ! -d "/var/lib/apt/lists" ] || [ "$(ls /var/lib/apt/lists/ | wc -l)" = "0" ]; then
         echo "Running apt-get update..."
-        apt-get update
+        aptSudoIf update
     else
         echo "Skipping apt-get update."
     fi
@@ -158,7 +174,7 @@ apt_get_update_if_needed()
 check_packages() {
     if ! dpkg -s "$@" > /dev/null 2>&1; then
         apt_get_update_if_needed
-        apt-get -y install --no-install-recommends "$@"
+        aptSudoIf -y install --no-install-recommends "$@"
     fi
 }
 
@@ -171,12 +187,12 @@ apt_get_update_if_needed
 if [[ -z $(apt-cache --names-only search ^tilix$) ]]; then
     . /etc/os-release
     if [ "${ID}" = "ubuntu" ]; then
-        apt-get install -y --no-install-recommends apt-transport-https software-properties-common
-        add-apt-repository -y ppa:webupd8team/terminix
+        aptSudoIf install -y --no-install-recommends apt-transport-https software-properties-common
+        aptSudoIf add-apt-repository -y ppa:webupd8team/terminix
     elif [ "${VERSION_CODENAME}" = "stretch" ]; then
-        echo "deb http://deb.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/stretch-backports.list
+	echo "deb http://deb.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/stretch-backports.list
     fi
-    apt-get update
+    aptSudoIf update
     if [[ -z $(apt-cache --names-only search ^tilix$) ]]; then
         echo "(!) WARNING: Tilix not available on ${ID} ${VERSION_CODENAME} architecture $(uname -m). Skipping."
     else
@@ -191,47 +207,51 @@ check_packages ${package_list}
 
 # Install Emoji font if available in distro - Available in Debian 10+, Ubuntu 18.04+
 if dpkg-query -W fonts-noto-color-emoji > /dev/null 2>&1 && ! dpkg -s fonts-noto-color-emoji > /dev/null 2>&1; then
-    apt-get -y install --no-install-recommends fonts-noto-color-emoji
+    aptSudoIf -y install --no-install-recommends fonts-noto-color-emoji
 fi
 
 # Check at least one locale exists
 if ! grep -o -E '^\s*en_US.UTF-8\s+UTF-8' /etc/locale.gen > /dev/null; then
-    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-    locale-gen
+    sudoIf echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+    sudoIf locale-gen
 fi
 
 # Install the Cascadia Code fonts - https://github.com/microsoft/cascadia-code
 if [ ! -d "/usr/share/fonts/truetype/cascadia" ]; then
+    echo "installing cascadia fonts..."
+
     curl -sSL https://github.com/microsoft/cascadia-code/releases/download/v2008.25/CascadiaCode-2008.25.zip -o /tmp/cascadia-fonts.zip
     unzip /tmp/cascadia-fonts.zip -d /tmp/cascadia-fonts
     mkdir -p /usr/share/fonts/truetype/cascadia
-    mv /tmp/cascadia-fonts/ttf/* /usr/share/fonts/truetype/cascadia/
+    sudoIf mv /tmp/cascadia-fonts/ttf/* /usr/share/fonts/truetype/cascadia/
     rm -rf /tmp/cascadia-fonts.zip /tmp/cascadia-fonts
 fi
 
 # Install noVNC
 if [ "${INSTALL_NOVNC}" = "true" ] && [ ! -d "/usr/local/novnc" ]; then
+    echo "installing novnc..."
+
     mkdir -p /usr/local/novnc
     curl -sSL https://github.com/novnc/noVNC/archive/v${NOVNC_VERSION}.zip -o /tmp/novnc-install.zip
     unzip /tmp/novnc-install.zip -d /usr/local/novnc
-    cp /usr/local/novnc/noVNC-${NOVNC_VERSION}/vnc.html /usr/local/novnc/noVNC-${NOVNC_VERSION}/index.html
+    sudoIf cp /usr/local/novnc/noVNC-${NOVNC_VERSION}/vnc.html /usr/local/novnc/noVNC-${NOVNC_VERSION}/index.html
     curl -sSL https://github.com/novnc/websockify/archive/v${WEBSOCKETIFY_VERSION}.zip -o /tmp/websockify-install.zip
-    unzip /tmp/websockify-install.zip -d /usr/local/novnc
-    ln -s /usr/local/novnc/websockify-${WEBSOCKETIFY_VERSION} /usr/local/novnc/noVNC-${NOVNC_VERSION}/utils/websockify
+    sudoIf unzip /tmp/websockify-install.zip -d /usr/local/novnc
+    sudoIf ln -s /usr/local/novnc/websockify-${WEBSOCKETIFY_VERSION} /usr/local/novnc/noVNC-${NOVNC_VERSION}/utils/websockify
     rm -f /tmp/websockify-install.zip /tmp/novnc-install.zip
 
     # Install noVNC dependencies and use them.
     if ! dpkg -s python3-minimal python3-numpy > /dev/null 2>&1; then
-        apt-get -y install --no-install-recommends python3-minimal python3-numpy
+        aptSudoIf -y install --no-install-recommends python3-minimal python3-numpy
     fi
-    sed -i -E 's/^python /python3 /' /usr/local/novnc/websockify-${WEBSOCKETIFY_VERSION}/run
+    sudoIf sed -i -E 's/^python /python3 /' /usr/local/novnc/websockify-${WEBSOCKETIFY_VERSION}/run
 fi
 
 # Set up folders for scripts and init files
-mkdir -p /var/run/dbus /usr/local/etc/vscode-dev-containers/
+sudo mkdir -p /var/run/dbus /usr/local/etc/vscode-dev-containers/
 
 # Script to change resolution of desktop
-cat << EOF > /usr/local/bin/set-resolution
+sudo bash -c 'cat > /usr/local/bin/set-resolution' << EOF
 #!/bin/bash
 RESOLUTION=\${1:-\${VNC_RESOLUTION:-1920x1080}}
 DPI=\${2:-\${VNC_DPI:-96}}
@@ -268,7 +288,7 @@ echo -e "\nSuccess!\n"
 EOF
 
 # Container ENTRYPOINT script
-cat << EOF > /usr/local/share/desktop-init.sh
+sudo bash -c 'cat > /usr/local/share/desktop-init.sh' << EOF
 #!/bin/bash
 
 user_name="${USERNAME}"
@@ -366,8 +386,8 @@ exec "\$@"
 log "** SCRIPT EXIT **"
 EOF
 
-echo "${VNC_PASSWORD}" | vncpasswd -f > /usr/local/etc/vscode-dev-containers/vnc-passwd
-chmod +x /usr/local/share/desktop-init.sh /usr/local/bin/set-resolution
+echo "${VNC_PASSWORD}" | sudo bash -c 'vncpasswd -f > /usr/local/etc/vscode-dev-containers/vnc-passwd'
+sudo chmod +x /usr/local/share/desktop-init.sh /usr/local/bin/set-resolution
 
 # Set up fluxbox config
 copy_fluxbox_config "/root"
@@ -376,7 +396,23 @@ if [ "${USERNAME}" != "root" ]; then
     chown -R ${USERNAME} /home/${USERNAME}/.Xmodmap /home/${USERNAME}/.fluxbox
 fi
 
+# Install Neovim v0.8.0 from GitHub releases.
+aptSudoIf remove neovim* # Remove every older installations of Neovim.
+wget https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.deb -O /tmp/nvim.deb
+sudo dpkg -i /tmp/nvim.deb
 
+wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
+  | gpg --dearmor \
+  | sudoIf dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
+
+echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://download.vscodium.com/debs vscodium main' \
+  | sudoIf tee /etc/apt/sources.list.d/vscodium.list
+
+aptSudoIf update && aptSudoIf install codium
+
+if [[ -z "$WAKATIME_API_KEY" ]]; then
+  echo -e "[settings]\napi_key = $WAKATIME_API_KEY" > ~/.wakatime.cfg
+fi
 
 cat << EOF
 
