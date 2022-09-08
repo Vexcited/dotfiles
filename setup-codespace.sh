@@ -23,7 +23,7 @@ package_list="
     fluxbox \
     dbus-x11 \
     x11-utils \
-    x11-xserver-utils \
+x11-xserver-utils \
     xdg-utils \
     fbautostart \
     at-spi2-core \
@@ -229,7 +229,7 @@ if [ ! -d "/usr/share/fonts/truetype/cascadia" ]; then
 fi
 
 # Install noVNC
-if [ "${INSTALL_NOVNC}" = "true" ] && [ ! -d "/usr/local/novnc" ]; then
+if [ ! -d "/usr/local/novnc" ]; then
     echo "installing novnc..."
 
     sudo mkdir -p /usr/local/novnc
