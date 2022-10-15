@@ -22,6 +22,21 @@ set mouse=a
 " Show number lines.
 set number
 
+"A Tab is two spaces.
+set tabstop=2
+
+" When hitting <BS>, pretend like a tab is removed, even if spaces.
+set softtabstop=2
+
+" Don't expand tabs to spaces by default.
+set noexpandtab
+
+" Number of spaces to use for auto-indenting.
+set shiftwidth=2
+
+" Use multiple of shiftwidth when indenting with '<' and '>'.
+set shiftround
+
 " Some servers have issues with backup files.
 set nobackup
 set nowritebackup
@@ -178,7 +193,7 @@ require 'lualine'.setup {
 
   sections = {
     lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_b = {'branch', 'diff'},
     lualine_c = {'filename'},
     lualine_x = {},
     lualine_y = {'encoding'},
