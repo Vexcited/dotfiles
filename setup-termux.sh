@@ -25,7 +25,7 @@ dialog --yesno \
   "Run 'termux-change-repo'?\n\nIf yes, then select 'Mirror Group' and then select the servers location that is best for you - Europe servers for me." \
   20 60 && \
   termux-change-repo
-clear # Clear dialogs.
+clear # Clear any dialog.
 
 echo "// Install cool packages."
 pkg install -y \
@@ -46,10 +46,14 @@ echo -e "\n// Initialize global 'git' configuration."
 git config --global user.name "Mikkel RINGAUD"
 git config --global user.email "mikkel@milescode.dev"
 
+echo -e "// Install some npm packages globally."
+npm i -g pnpm yarn vercel
+
 dialog --yesno \
   "Authenticate to GitHub using their CLI?" \
   20 60 && clear && \
   gh auth login -p https -w -s codespace
+clear # Clear any dialog.
 
 if [ ! -d $HOME/.oh-my-zsh ]; then
   echo -e "\n// Install 'oh-my-zsh'."
@@ -69,6 +73,12 @@ fi
 if [ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
   echo -e "\n// Install 'zsh-autosuggestions'."
   git clone https://github.com/zsh-users/zsh-autosuggestions.git $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+fi
+
+if [ ! -f $HOME/.local/share/nvim/site/autoload/plug.vim ]; then
+  echo -e "\n// Install 'vim-plug'."
+  sh -c 'curl -fLo $HOME/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 fi
 
 echo -e "\n// Linking configuration..."
@@ -116,6 +126,9 @@ create_symlink $DOTFILES/motd $HOME/../usr/etc/motd
 echo -e "\t- Add nvim configuration."
 mkdir -p $HOME/.config/nvim
 create_symlink $DOTFILES/nvim/init.vim $HOME/.config/nvim/init.vim
+nvim +"PlugInstall" +qall
+nvim +"CocInstall -sync coc-tsserver coc-json coc-eslint coc-html coc-css" +qall
+nvim +"CocUpdateSync" +qall
 
 echo -e "\n// Reload settings and setup '~/storage'."
 termux-reload-settings
