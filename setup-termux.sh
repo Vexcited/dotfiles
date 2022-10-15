@@ -1,21 +1,24 @@
-#!/bin/sh
+#!/usr/bin/env bash
+clear
+
 echo "/**"
 echo " * Vexcited's .files / Termux"
 echo " * https://github.com/Vexcited/dotfiles"
-echo " */\n"
+echo -e " */\n"
 
-echo "\n// Check existence of '~/.vexcited-dotfiles' directory."
+echo -e "\n// Check existence of '~/.vexcited-dotfiles' directory."
 DOTFILES=$HOME/.vexcited-dotfiles/termux
 if [ ! -d "$DOTFILES" ]; then
   echo "ERROR: $DOTFILES directory doesn't exist !"
   echo "ERROR: Make sure you've cloned the repository into '$DOTFILES'."
   exit 1
 fi
+echo "Ok!"
 
-echo "\n// Install required packages."
+echo -e "\n// Install required packages."
 pkg upgrade -y && pkg install -y git dialog
 
-echo "\n// Pull latest commits - if available."
+echo -e "\n// Pull latest commits - if available."
 git pull
 
 dialog --yesno \
@@ -39,7 +42,7 @@ pkg install -y \
   python \
   neovim-nightly
 
-echo "\n// Initialize global 'git' configuration."
+echo -e "\n// Initialize global 'git' configuration."
 git config --global user.name "Mikkel RINGAUD"
 git config --global user.email "mikkel@milescode.dev"
 
@@ -49,27 +52,32 @@ dialog --yesno \
   gh auth login -p https -w -s codespace
 
 if [ ! -d $HOME/.oh-my-zsh ]; then
-  echo "// Install 'oh-my-zsh'."
+  echo -e "\n// Install 'oh-my-zsh'."
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
 if [ ! -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]; then
-  echo "// Install PowerLevel10k theme for 'oh-my-zsh'."
+  echo -e "\n// Install PowerLevel10k theme for 'oh-my-zsh'."
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
+fi
 
-  echo "// Install 'zsh-syntax-highlighting'."
+if [ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
+  echo -e "\n// Install 'zsh-syntax-highlighting'."
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+fi
 
-  echo "// Install 'zsh-autosuggestions'."
+if [ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
+  echo -e "\n// Install 'zsh-autosuggestions'."
   git clone https://github.com/zsh-users/zsh-autosuggestions.git $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 fi
 
-echo "\n// Linking configuration..."
+echo -e "\n// Linking configuration..."
 mkdir -p $HOME/.config
 
 create_symlink () {
   dotfilesLink=$1
-  targetLink=$2                                                 
+  targetLink=$2
+
   if [[ -L "$targetLink" ]]; then
     if [[ -e "$targetLink" ]]; then
       if [[ $(readlink $targetLink) == $dotfilesLink ]]; then
@@ -77,47 +85,50 @@ create_symlink () {
       else
         echo "OVERWRITE: '$targetLink' is linked to another file."
         ln -sf $dotfilesLink $targetLink
-      fi                                                            
+      fi
     else
       echo "BROKEN: '$targetLink' link is going to be re-created."
-      rm -rf $targetLink                                              
+      rm -rf $targetLink
       ln -sf $dotfilesLink $targetLink
-    fi                                                            
+    fi
   else
     echo "NEW: '$targetLink'."
     ln -sf $dotfilesLink $targetLink
   fi
 }
 
-echo "\t- Migrate from Bash to ZSH."
+echo -e "\t- Migrate from Bash to ZSH."
 chsh -s zsh
 rm -rf $HOME/.bash*
 
-echo "\t- Add ZSH configuration."
+echo -e "\t- Add ZSH configuration."
 create_symlink $DOTFILES/zsh/zshrc $HOME/.zshrc
 create_symlink $DOTFILES/zsh/p10k.zsh $HOME/.p10k.zsh
 
-echo "\t- Add Termux configuration."
+echo -e "\t- Add Termux configuration."
 mkdir -p $HOME/.termux 
 create_symlink $DOTFILES/termux/colors.properties $HOME/.termux/colors.properties
-create_symlink $DOTFILES/termux/termux.properties $HOME/.termux/termux.properties
+cp $DOTFILES/termux/termux.properties $HOME/.termux/termux.properties
 create_symlink $DOTFILES/termux/font.ttf $HOME/.termux/font.ttf
 create_symlink $DOTFILES/termux/font-italic.ttf $HOME/.termux/font-italic.ttf
+create_symlink $DOTFILES/motd $HOME/../usr/etc/motd
 
-echo "\t- Add nvim configuration."
+echo -e "\t- Add nvim configuration."
 mkdir -p $HOME/.config/nvim
+create_symlink $DOTFILES/nvim/init.vim $HOME/.config/nvim/init.vim
 
-echo "// Reload settings and setup '~/storage'."
+echo -e "\n// Reload settings and setup '~/storage'."
 termux-reload-settings
 termux-setup-storage
 
-echo "// Clean-up."
+echo -e "\n// Clean-up."
 pkg autoclean
 pkg clean
 
 clear
 echo "/**"
-echo " * Done! Now you just have to close and re-open Termux to have the latest modifications."
+echo " * Done! Now you just have to close and"
+echo " * re-open Termux to have the latest modifications."
 echo " *"
 echo " * Have fun with your new configuration ~"
 echo " * - Vexcited"
