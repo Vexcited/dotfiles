@@ -14,7 +14,7 @@ pkg install git -y && \
 cd ~/ && \
 git clone https://github.com/Vexcited/dotfiles && \
 cd dotfiles && \
-chmod -x ./setup-termux.sh && \
+chmod +x ./setup-termux.sh && \
 ./setup-termux.sh
 ```
 
