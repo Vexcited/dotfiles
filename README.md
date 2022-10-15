@@ -5,15 +5,8 @@ My dotfiles for Windows, Arch-Linux, Termux and so on.
 
 ## Termux (Android)
 
-Copy and paste this script into Termux and it will
-automatically run the setup script.
-
-```bash
-pkg upgrade -y && pkg install git -y && \
-git clone https://github.com/Vexcited/dotfiles ~/.vexcited-dotfiles && cd ~/.vexcited-dotfiles && \
-chmod +x ./setup.sh && \
-./setup.sh
-```
+Setup and post-setup configuration indications are given
+in [its wiki](https://github.com/Vexcited/dotfiles/wiki/Termux).
 
 ## Arch-Linux
 
