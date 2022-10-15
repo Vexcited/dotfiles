@@ -30,6 +30,7 @@ pkg install -y \
   wget \
   curl \
   lsd \
+  zsh \
   zip \
   unzip \
   openssh \
