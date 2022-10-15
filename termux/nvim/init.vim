@@ -1,6 +1,7 @@
 call plug#begin()
 " Styles.
 Plug 'shaunsingh/nord.nvim'
+Plug 'nvim-lualine/lualine.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 
 " Auto-completion.
@@ -169,4 +170,29 @@ nnoremap <leader>tf <cmd>Telescope find_files<cr>
 nnoremap <leader>tb <cmd>Telescope buffers<cr>
 nnoremap <leader>th <cmd>Telescope help_tags<cr>
 
-lua require'nvim-treesitter.configs'.setup{highlight={enable=true}}
+lua << EOF
+require 'lualine'.setup {
+  options = {
+    theme = "nord"
+  },
+
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {},
+    lualine_y = {'encoding'},
+    lualine_z = {'location'}
+  }
+}
+
+require 'nvim-treesitter.configs'.setup {
+  ensure_installed = { "javascript", "typescript", "zig" },
+  auto_install = true,
+
+  highlight = {
+    enable = true
+  }
+}
+EOF
+
