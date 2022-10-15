@@ -71,13 +71,19 @@ create_symlink () {
   dotfilesLink=$1
   targetLink=$2                                                 
   if [[ -L "$targetLink" ]]; then
-    if [[ -e "$targetLink" ]]; then                                   if [[ $(readlink $targetLink) == $dotfilesLink ]]; then           echo "SKIP: '$targetLink' is already linked."
-      else                                                              echo "OVERWRITE: '$targetLink' is linked to another file."
+    if [[ -e "$targetLink" ]]; then
+      if [[ $(readlink $targetLink) == $dotfilesLink ]]; then
+        echo "SKIP: '$targetLink' is already linked."
+      else
+        echo "OVERWRITE: '$targetLink' is linked to another file."
         ln -sf $dotfilesLink $targetLink
-      fi                                                            else
+      fi                                                            
+    else
       echo "BROKEN: '$targetLink' link is going to be re-created."
-      rm -rf $targetLink                                              ln -sf $dotfilesLink $targetLink
-    fi                                                            else
+      rm -rf $targetLink                                              
+      ln -sf $dotfilesLink $targetLink
+    fi                                                            
+  else
     echo "NEW: '$targetLink'."
     ln -sf $dotfilesLink $targetLink
   fi
