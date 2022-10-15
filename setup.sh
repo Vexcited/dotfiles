@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #
 # This file is a global setup script. Here,
 # we'll determine the type of configuration to use
@@ -8,18 +8,23 @@
 # @ github.com/vexcited/dotfiles
 clear
 
-if [ "$CODESPACES" = "true" ]
+if [ ! -z "$CODESPACES" ] && [ "$CODESPACES" = "true" ]
 then
   echo "check: codespace environment detected. running 'setup-codespace.sh'..."
   
   chmod +x ./setup-codespace.sh
   ./setup-codespace.sh
+elif [ ! -z "$TERMUX_VERSION" ]
+then
+  echo "check: termux environment detected. running 'setup-termux.sh'..."
+  chmod +x ./setup-termux.sh
+  ./setup-termux.sh
 else
-  echo "check: nothing CURRENTLY compatible with your os was detected."
+  echo "check: nothing CURRENTLY compatible with your env was detected."
   echo "try again later."
   echo ""
-  echo "if your os was arch-linux or termux, please run them manually:"
-  echo "\t- termux: ./setup-termux.sh"
+  echo "if your environment was arch-linux, please run it manually:"
   echo "\t- arch-linux: ./setup-arch-linux.sh"
 fi
+
 

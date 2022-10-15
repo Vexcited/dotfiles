@@ -9,13 +9,10 @@ Copy and paste this script into Termux and it will
 automatically run the setup script.
 
 ```bash
-pkg upgrade -y && \
-pkg install git -y && \
-cd ~/ && \
-git clone https://github.com/Vexcited/dotfiles && \
-cd dotfiles && \
-chmod +x ./setup-termux.sh && \
-./setup-termux.sh
+pkg upgrade -y && pkg install git -y && \
+git clone https://github.com/Vexcited/dotfiles ~/.vexcited-dotfiles && cd ~/.vexcited-dotfiles && \
+chmod +x ./setup.sh && \
+./setup.sh
 ```
 
 ## Arch-Linux
