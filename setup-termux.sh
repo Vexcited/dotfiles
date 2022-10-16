@@ -40,6 +40,7 @@ pkg install -y \
   gh \
   nodejs \
   python \
+	termux-api \
   neovim-nightly
 
 echo -e "\n// Initialize global 'git' configuration."

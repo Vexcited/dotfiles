@@ -34,6 +34,9 @@ set noexpandtab
 " Number of spaces to use for auto-indenting.
 set shiftwidth=2
 
+" Hide default mode status.
+set noshowmode
+
 " Use multiple of shiftwidth when indenting with '<' and '>'.
 set shiftround
 
@@ -110,11 +113,6 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
@@ -144,11 +142,6 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of language server.
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocActionAsync('format')
 
@@ -170,20 +163,37 @@ nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
 nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 " Show commands.
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-nnoremap <leader>tf <cmd>Telescope find_files<cr>
-nnoremap <leader>tb <cmd>Telescope buffers<cr>
-nnoremap <leader>th <cmd>Telescope help_tags<cr>
+nnoremap <silent><nowait> tf <cmd>Telescope find_files<cr>
+nnoremap <silent><nowait> tb <cmd>Telescope buffers<cr>
+nnoremap <silent><nowait> th <cmd>Telescope help_tags<cr>
+
+" Open file explorer.
+nnoremap <silent><nowait> tc <cmd>Texplore<cr>
+
+" Quick save.
+nnoremap <silent><nowait> ws <cmd>w<cr>
+" Quick save and quit.
+nnoremap <silent><nowait> wq <cmd>wq<cr>
+" Quit current no save.
+nnoremap <silent><nowait> qq <cmd>q!<cr>
+" Quit all tabs no save.
+nnoremap <silent><nowait> qa <cmd>qa!<cr>
+
+" Using Termux:API features for clipboard.
+" Credits: <https://ibnishak.github.io/blog/post/copy-to-termux-clip>
+vnoremap <C-x> :!termux-clipboard-set<CR>
+vnoremap <C-c> :w !termux-clipboard-set<CR><CR>
+inoremap <C-v> <ESC>:read !termux-clipboard-get<CR>i
+
+" Move lines up/down shortcuts.
+" Credits: <https://vim.fandom.com/wiki/Moving_lines_up_or_down>
+nnoremap <A-Down> :m .+1<CR>==
+nnoremap <A-Up> :m .-2<CR>==
+inoremap <A-Down> <Esc>:m .+1<CR>==gi
+inoremap <A-Up> <Esc>:m .-2<CR>==gi
+vnoremap <A-Down> :m '>+1<CR>gv=gv
+vnoremap <A-Up> :m '<-2<CR>gv=gv
 
 lua << EOF
 require 'lualine'.setup {
