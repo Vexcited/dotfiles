@@ -52,7 +52,7 @@ npm i -g pnpm yarn vercel
 dialog --yesno \
   "Authenticate to GitHub using their CLI?" \
   20 60 && clear && \
-  gh auth login -p https -w -s codespace
+  gh auth login -p https -w -s codespace,write:gpg_key
 clear # Clear any dialog.
 
 if [ ! -d $HOME/.oh-my-zsh ]; then
