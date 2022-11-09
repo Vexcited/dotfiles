@@ -9,8 +9,8 @@ export GPG_TTY=$TTY
 # Use PowerLevel10k.
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# Enable command auto-correction.
-ENABLE_CORRECTION="true"
+# Disable command auto-correction.
+ENABLE_CORRECTION="false"
 
 # Disable marking untracked files under VCS as dirty.
 # This makes repository status check for large repositories
@@ -23,12 +23,13 @@ HIST_STAMPS="dd/mm/yyyy"
 
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git wakatime zsh-syntax-highlighting zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
 # Aliases because it's cool.
 alias ls="lsd"
+alias la="lsd -a"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

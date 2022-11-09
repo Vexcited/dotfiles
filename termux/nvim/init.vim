@@ -10,7 +10,9 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Search and previews.
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'fannheyward/telescope-coc.nvim'
+
+" Metrics
+Plug 'wakatime/vim-wakatime'
 call plug#end()
 
 " Use Nord as global theme.
@@ -21,15 +23,16 @@ set mouse=a
 
 " Show number lines.
 set number
+set numberwidth=3
 
-"A Tab is two spaces.
+" A Tab is two spaces.
 set tabstop=2
 
 " When hitting <BS>, pretend like a tab is removed, even if spaces.
 set softtabstop=2
 
 " Don't expand tabs to spaces by default.
-set noexpandtab
+set expandtab
 
 " Number of spaces to use for auto-indenting.
 set shiftwidth=2
@@ -115,6 +118,7 @@ augroup end
 
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
+
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
 
@@ -203,10 +207,10 @@ require 'lualine'.setup {
 
   sections = {
     lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff'},
-    lualine_c = {'filename'},
+    lualine_b = {'branch'},
+    lualine_c = {'diff'},
     lualine_x = {},
-    lualine_y = {'encoding'},
+    lualine_y = {'filename'},
     lualine_z = {'location'}
   }
 }

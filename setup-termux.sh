@@ -76,6 +76,11 @@ if [ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
   git clone https://github.com/zsh-users/zsh-autosuggestions.git $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 fi
 
+if [ ! -d $HOME/.oh-my-zsh/custom/plugins/wakatime ]; then
+  echo -e "\n// Install 'wakatime' for ZSH."
+  git clone https://github.com/sobolevn/wakatime-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/wakatime
+fi
+
 if [ ! -f $HOME/.local/share/nvim/site/autoload/plug.vim ]; then
   echo -e "\n// Install 'vim-plug'."
   sh -c 'curl -fLo $HOME/.local/share/nvim/site/autoload/plug.vim --create-dirs \
