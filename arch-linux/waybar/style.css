@@ -1,0 +1,100 @@
+@import "macchiato.css";
+
+* {
+  /* `otf-font-awesome` is required to be installed for icons */
+  font-family: 'Hack Nerd Font', FontAwesome, sans-serif;
+  font-size: 13px;
+  min-height: 0;
+}
+
+#waybar {
+  background: transparent;
+  color: @text;
+  margin: 5px 5px;
+}
+
+#workspaces {
+  border-radius: 1rem;
+  margin: 5px;
+  background-color: @surface0;
+  margin-left: 1rem;
+}
+
+#workspaces button {
+  color: @text;
+  border-radius: 1rem;
+  padding: 0.2rem 0.6rem;
+
+  background-color: @surface0;
+}
+
+#workspaces button.active {
+  color: @base;
+  background-color: @mauve;
+  
+  border-radius: 1rem;
+}
+
+#workspaces button:hover {
+  color: @base;
+  background-color: @lavender;
+  border-radius: 1rem;
+}
+
+#tray,
+#backlight,
+#clock,
+#battery,
+#pulseaudio,
+#memory,
+#network,
+#language,
+#cpu {
+  background-color: @base;
+  padding: 0.5rem 1rem;
+  margin: 5px 0;
+}
+
+#clock {
+  color: @mauve;
+  border-radius: 0px 1rem 1rem 0px;
+  margin-right: 1rem;
+}
+
+#battery {
+  color: @green;
+}
+
+#battery.charging {
+  color: @green;
+}
+
+#battery.warning:not(.charging) {
+  color: @red;
+}
+
+#backlight, #battery {
+  border-radius: 0;
+}
+
+#pulseaudio {
+  border-radius: 1rem 0px 0px 1rem;
+}
+
+#tray {
+  margin-right: 1rem;
+  border-radius: 1rem;
+}
+
+#window {
+  padding: 0 1rem;
+  background-color: @surface0;
+  border-radius: 1rem;
+  
+  margin: 5px;
+  margin-left: 0.75rem;
+}
+
+window#waybar.empty #window {
+  padding: 0;
+}

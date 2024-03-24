@@ -1,3 +1,0 @@
-# Load bash configuration.
-[[ -f ~/.bashrc ]] && . ~/.bashrc
-

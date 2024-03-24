@@ -1,0 +1,26 @@
+#window {
+  margin: 2px;
+  border: 1px solid #c6a0f6;
+  border-radius: 4px;
+}
+
+#outer-box {
+  padding: 12px;
+}
+
+#input {
+  margin-bottom: 12px;
+}
+
+#entry:selected {
+  color: #c6a0f6;
+  background-color: #363a4f;
+  border: 1px solid #c6a0f6;
+}
+
+#entry {
+  font-size: 14px;
+  padding: 8px 12px;
+  margin: 2px 0;
+  border: 1px solid transparent;
+}
