@@ -1,0 +1,93 @@
+@import "latte.css";
+
+* {
+  /* `otf-font-awesome` is required to be installed for icons */
+  font-family: 'Hack Nerd Font', FontAwesome, sans-serif;
+  font-size: 13px;
+  min-height: 0;
+}
+
+#waybar {
+  background: transparent;
+  color: @text;
+  margin: 0;
+}
+
+#workspaces {
+  border-radius: 4px;
+  margin: 6px 4px 0 10px;
+  background-color: @surface0;
+}
+
+#workspaces button {
+  color: @text;
+  border-radius: 4px;
+  padding: 6px 0.6rem;
+  background-color: @surface0;
+}
+
+#workspaces button.active {
+  color: @base;
+  background-color: @mauve;
+}
+
+#workspaces button:hover {
+  color: @mauve;
+}
+
+#tray,
+#backlight,
+#clock,
+#battery,
+#pulseaudio,
+#memory,
+#network,
+#language,
+#cpu {
+  background-color: @base;
+  padding: 6px 1rem;
+  margin: 6px 0 0 0;
+}
+
+#clock {
+  color: @mauve;
+  border-radius: 0px 4px 4px 0px;
+  margin-right: 1rem;
+}
+
+#battery {
+  color: @green;
+}
+
+#battery.charging {
+  color: @green;
+}
+
+#battery.warning:not(.charging) {
+  color: @red;
+}
+
+#backlight, #battery {
+  border-radius: 0;
+}
+
+#pulseaudio {
+  border-radius: 4px 0px 0px 4px;
+}
+
+#tray {
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+#window {
+  padding: 6px 1rem;
+  background-color: @surface0;
+  border-radius: 4px;
+  
+  margin: 6px 4px 0 4px;
+}
+
+window#waybar.empty #window {
+  padding: 0;
+}
