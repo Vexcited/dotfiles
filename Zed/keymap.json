@@ -7,7 +7,9 @@
       "alt-ctrl-up": "editor::AddSelectionAbove",
       "alt-ctrl-down": "editor::AddSelectionBelow",
       "ctrl-d": ["editor::SelectNext", { "replace_newest": false }],
-      "ctrl-shift-d": ["editor::SelectPrevious", { "replace_newest": true }]
+      "ctrl-shift-d": ["editor::SelectPrevious", { "replace_newest": true }],
+      "ctrl-shift-/": "editor::ToggleComments", // on azerty, shift is needed to get the slash
+      "ctrl-/": "editor::ToggleComments" // on qwerty, we good
     }
   }
 ]
