@@ -1,0 +1,18 @@
+{
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  "ui_font_size": 14,
+  "ui_font_family": "Hack Nerd Font",
+  "buffer_font_size": 14,
+  "buffer_font_family": "Hack Nerd Font",
+  "base_keymap": "VSCode",
+  "tab_size": 2,
+  "hard_tabs": false,
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Catppuccin Macchiato"
+  }
+}

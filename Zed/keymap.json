@@ -1,0 +1,13 @@
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      "alt-shift-up": "editor::DuplicateLineUp",
+      "alt-shift-down": "editor::DuplicateLineDown",
+      "alt-ctrl-up": "editor::AddSelectionAbove",
+      "alt-ctrl-down": "editor::AddSelectionBelow",
+      "ctrl-d": ["editor::SelectNext", { "replace_newest": false }],
+      "ctrl-shift-d": ["editor::SelectPrevious", { "replace_newest": true }]
+    }
+  }
+]
