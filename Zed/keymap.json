@@ -9,7 +9,15 @@
       "ctrl-d": ["editor::SelectNext", { "replace_newest": false }],
       "ctrl-shift-d": ["editor::SelectPrevious", { "replace_newest": true }],
       "ctrl-shift-/": "editor::ToggleComments", // on azerty, shift is needed to get the slash
-      "ctrl-/": "editor::ToggleComments" // on qwerty, we good
+      "ctrl-/": "editor::ToggleComments", // on qwerty, we good
+      "ctrl-alt-b": "terminal_panel::ToggleFocus",
+      "ctrl-r": "projects::OpenRecent"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-alt-b": "terminal_panel::ToggleFocus"
     }
   }
 ]
