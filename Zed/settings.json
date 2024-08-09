@@ -10,9 +10,29 @@
   "base_keymap": "VSCode",
   "tab_size": 2,
   "hard_tabs": false,
+  "terminal": {
+    "font_family": "Hack Nerd Font",
+    "font_size": 14
+  },
   "theme": {
     "mode": "dark",
     "light": "One Light",
     "dark": "Catppuccin Macchiato"
+  },
+  "languages": {
+    "TypeScript": {
+      "formatter": {
+        "code_actions": {
+          "source.fixAll.eslint": true
+        }
+      }
+    },
+    "JavaScript": {
+      "formatter": {
+        "code_actions": {
+          "source.fixAll.eslint": true
+        }
+      }
+    }
   }
 }
