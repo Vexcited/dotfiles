@@ -1,16 +1,12 @@
 # dotfiles
 
-My dotfiles for Windows, Arch-Linux, Termux and so on.
+My current configuration files for my dual-boot macOS and Asahi Linux (Fedora) on my M2 MacBook Air.
 
-## Arch Linux
+## macOS
 
-(TODO)
 
-## Windows (Home: 22H2)
 
-### Install `git`
+## Arch Linux (through Asahi Linux)
 
-```powershell
-winget install Git.Git
-```
+
 

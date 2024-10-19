@@ -1,0 +1,25 @@
+---
+"terminal:select_bookmark_down": none
+"editor_view:select_previous_command": none
+"pane_group:close_current_session": none
+"editor_view:select_command": none
+"workspace:show_command_search": none
+"terminal:select_bookmark_up": none
+"editor_view:select_next_command": none
+"pane_group:add_right": none
+"pane_group:add_down": none
+"editor:select_to_line_end": none
+"editor:select_to_paragraph_start": none
+"editor:select_to_line_start": none
+"input:open_completion_suggestions": tab
+"editor_view:end": none
+"editor_view:select_up": none
+"terminal:clear_blocks": ctrl-shift-L
+"editor:select_to_paragraph_end": none
+"workspace:toggle_ai_assistant": none
+"terminal:open_share_block_modal": none
+"terminal:select_previous_block": none
+"editor:edit_link": none
+"workspace:close_window": none
+"editor_view:clear_buffer": none
+"terminal:select_next_block": none
