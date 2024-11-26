@@ -5,7 +5,7 @@
   
   "modules-left": ["hyprland/workspaces", "hyprland/window"],
   "modules-center": [],
-  "modules-right": ["pulseaudio", "network", "cpu", "memory", "backlight", "battery", "hyprland/language", "clock", "tray"],
+  "modules-right": ["pulseaudio", "cpu", "memory", "backlight", "battery", "clock", "custom/notification", "tray"],
   
   "hyprland/workspaces": {
     "format": "{name}"
@@ -13,13 +13,6 @@
 
   "hyprland/window": {
     "separate-outputs": true
-  },
-
-  "hyprland/language": {
-    "format": "{} 󰌌 ",
-    "format-en": "us-intl",
-    "format-fr": "fr",
-    "keyboard-name": "at-translated-set-2-keyboard"
   },
 
   "tray": {
@@ -83,5 +76,25 @@
       "default": [" ", " ", " "]
     },
     "on-click": "pavucontrol"
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "<span foreground='red'><sup></sup></span>",
+      "none": "",
+      "dnd-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-none": "",
+      "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "inhibited-none": "",
+      "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-inhibited-none": ""
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
   }
 }
